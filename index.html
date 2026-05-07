@@ -250,6 +250,21 @@ body{background:var(--bg);color:var(--wht);font-family:system-ui,sans-serif;font
 <div id="mbg"><div id="mod"></div></div>
 <div id="cp"></div>
 </div>
+<div id="login-overlay">
+  <div class="login-box">
+    <div class="login-title">⚡ SUPERTRELLO</div>
+    <div class="login-sub">CRONOS SYSTEM · Escolha seu perfil</div>
+    <div id="login-users-list"></div>
+    <div class="login-sep">ou crie seu perfil</div>
+    <div class="login-new-form">
+      <input class="login-input" id="ln-name" placeholder="Seu nome..." maxlength="30">
+      <input class="login-input" id="ln-initials" placeholder="Iniciais (ex: RO)" maxlength="3">
+      <div style="font-size:11px;color:var(--wht3)">Cor do avatar:</div>
+      <div class="color-row" id="ln-colors"></div>
+      <button class="login-create-btn" onclick="createAndLogin()">Entrar →</button>
+    </div>
+  </div>
+</div>
 <script>
 const CCOLS=['#5B8FD4','#FFD700','#9090A8','#4CAF7D','#FF4D4D','#E07A30','#C9A84C','#5DCAA5','#D4537E','#7F77DD'];
 const USERS={GA:{i:'GA',c:'#3A1A6A',t:'#C0A0F0',name:'Gabriel',role:'Gerente / Admin'},RO:{i:'RO',c:'#1A3A2A',t:'#5DCAA5',name:'Robson',role:'Expedição & Logística'},ER:{i:'ER',c:'#3A2A1A',t:'#EF9F27',name:'Erick',role:'Catálogo & Estoque'},GS:{i:'GS',c:'#1A2A3A',t:'#85B7EB',name:'GS',role:'Suporte & Devoluções'}};
@@ -392,21 +407,5 @@ loadData();
 initLogin();
 
 </script>
-
-<div id="login-overlay">
-  <div class="login-box">
-    <div class="login-title">⚡ SUPERTRELLO</div>
-    <div class="login-sub">CRONOS SYSTEM · Escolha seu perfil</div>
-    <div id="login-users-list"></div>
-    <div class="login-sep">ou crie seu perfil</div>
-    <div class="login-new-form">
-      <input class="login-input" id="ln-name" placeholder="Seu nome..." maxlength="30">
-      <input class="login-input" id="ln-initials" placeholder="Iniciais (ex: RO)" maxlength="3">
-      <div style="font-size:11px;color:var(--wht3)">Cor do avatar:</div>
-      <div class="color-row" id="ln-colors"></div>
-      <button class="login-create-btn" onclick="createAndLogin()">Entrar →</button>
-    </div>
-  </div>
-</div>
 </body>
 </html>
