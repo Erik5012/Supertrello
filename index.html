@@ -319,8 +319,6 @@ function updMeta(){const v=parseFloat(document.getElementById('meta-inp')?.value
 function renderProbs(){const probs=tasks.filter(t=>(t.labels||[]).some(l=>l==='prob'||l==='size')).sort((a,b)=>({urgent:0,high:1,medium:2,low:3}[a.urgency]||2)-({urgent:0,high:1,medium:2,low:3}[b.urgency]||2));const getCol=id=>(cols.find(c=>c.id===id)||{title:id}).title;document.getElementById('plist').innerHTML=probs.length===0?'<div style="text-align:center;color:var(--wht3);padding:50px">Nenhum problema ativo!</div>':probs.map(t=>{const sz=(t.labels||[]).includes('size')&&!(t.labels||[]).includes('prob');const u=USERS[t.user]||USERS.GA;return`<div class="prob-card${sz?' sz':''}" onclick="setView('board',document.querySelector('.mn'));openCard(${t.id})"><div style="display:flex;align-items:center;gap:10px;margin-bottom:${t.probDesc?'8':'0'}px"><div style="font-size:18px">${sz?'⚡':'⚠'}</div><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:500;color:var(--wht);margin-bottom:2px">${t.title}</div>${t.probTitle?`<div style="font-size:12px;color:${sz?'var(--org)':'var(--red)'};font-weight:500">${t.probTitle}</div>`:''}</div><span class="prob-badge" style="background:${sz?'var(--orga)':'var(--reda)'};color:${sz?'var(--org)':'var(--red)'}">${sz?'FALTA TAMANHO':'TENHO UM PROBLEMA'}</span></div>${t.probDesc?`<div class="prob-desc-box">${t.probDesc}</div>`:''}<div style="display:flex;align-items:center;gap:8px;margin-top:6px"><div class="av" style="background:${u.c};color:${u.t};width:18px;height:18px;font-size:8px">${u.i}</div><span style="font-size:11px;color:var(--wht3)">${u.name} · ${t.cat} · ${getCol(t.status)} · Prazo: ${t.due||'—'}</span></div></div>`;}).join('');}
 function renderLog(){document.getElementById('llist').innerHTML=log.map(l=>`<div class="log-item"><span style="font-size:15px">${l.ico}</span><span class="log-txt">${l.txt}</span><span class="log-time">${l.dt}</span></div>`).join('');}
 document.getElementById('bv').style.display='flex';
-loadData();
-initLogin();
 
 // === USER LOGIN SYSTEM ===
 const AVATAR_COLORS = ['#3A1A6A','#1A3A6A','#1A6A3A','#6A3A1A','#6A1A3A','#2A5A6A','#5A2A6A','#6A5A1A','#1A5A5A','#5A1A1A'];
@@ -390,6 +388,9 @@ function initLogin(){
   if(saved&&USERS[saved]){loginAs(saved);}
   else{showLogin();}
 }
+loadData();
+initLogin();
+
 </script>
 
 <div id="login-overlay">
