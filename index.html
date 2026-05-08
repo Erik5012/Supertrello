@@ -393,7 +393,7 @@ function createAndLogin(){
   const colorIdx=AVATAR_COLORS.indexOf(newUserColor);
   const textColor=AVATAR_TEXT_COLORS[colorIdx]||'#fff';
   const uid=initials+(Date.now()%10000);
-  USERS[uid]={i:uid,c:newUserColor,t:textColor,name:name,role:'Usuário'};
+  USERS[uid]={i:initials,c:newUserColor,t:textColor,name:name,role:'Usuário'};
   saveExtraUsers();
   loginAs(uid);
 }
