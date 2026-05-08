@@ -284,7 +284,7 @@ let tasks=[
   {id:7,title:'Devolução lote abril — processar notas',status:'overdue',urgency:'urgent',user:'RO',cat:'Devoluções',due:'2026-04-25',labels:['prob'],probTitle:'Bloqueado pelo financeiro',probDesc:'Financeiro não liberou processamento. Prazo vencido.',checklist:[{t:'Listar',d:true},{t:'Processar',d:false}],comments:[],imgs:[],customLabels:[]},
   {id:8,title:'Estratégia — revisão de preços vs concorrente',status:'todo',urgency:'medium',user:'GA',cat:'Estratégia',due:'2026-05-01',labels:[],probTitle:'',probDesc:'',checklist:[],comments:[],imgs:[],customLabels:[]},
 ];
-let log=[{ico:'✅',txt:'<strong>${curUser?curUser.name:'Gabriel'}</strong> concluiu <strong>Kit CX180</strong>',dt:'27/04 16:00'},{ico:'📝',txt:'<strong>Gabriel</strong> criou <strong>Produtos novos Y888</strong>',dt:'29/04 11:00'},{ico:'⚠',txt:'<strong>GS</strong> marcou problema em <strong>Devolução lote abril</strong>',dt:'26/04 11:00'}];
+let log=[{ico:'✅',txt:'<strong>${curUser?curUser.name:"Gabriel"}</strong> concluiu <strong>Kit CX180</strong>',dt:'27/04 16:00'},{ico:'📝',txt:'<strong>Gabriel</strong> criou <strong>Produtos novos Y888</strong>',dt:'29/04 11:00'},{ico:'⚠',txt:'<strong>GS</strong> marcou problema em <strong>Devolução lote abril</strong>',dt:'26/04 11:00'}];
 function saveData(){try{localStorage.setItem('spt_tasks',JSON.stringify(tasks));localStorage.setItem('spt_cols',JSON.stringify(cols));localStorage.setItem('spt_log',JSON.stringify(log));localStorage.setItem('spt_idC',String(idC));}catch(e){}}
 function loadData(){try{const st=localStorage.getItem('spt_tasks');const sc=localStorage.getItem('spt_cols');const sl=localStorage.getItem('spt_log');const si=localStorage.getItem('spt_idC');if(st)tasks=JSON.parse(st);if(sc)cols=JSON.parse(sc);if(sl)log=JSON.parse(sl);if(si)idC=parseInt(si);}catch(e){}}
 let curView='board',curF='all',idC=9,editC=null,metaVal=0;
@@ -302,8 +302,8 @@ function closeM(){document.getElementById('mbg').classList.remove('open');}
 document.getElementById('mbg').addEventListener('click',function(e){if(e.target===this)closeM();});
 function toggleChk(tid,idx){const t=tasks.find(x=>x.id===tid);if(t){t.checklist[idx].d=!t.checklist[idx].d;openCard(tid);renderBoard();}}
 function delChk(tid,idx){const t=tasks.find(x=>x.id===tid);if(t){t.checklist.splice(idx,1);openCard(tid);}}
-function addChk(tid){const t=tasks.find(x=>x.id===tid);const v=document.getElementById('chk-new')?.value.trim();if(!t||!v)return;t.checklist.push({t:v,d:false});log.unshift({ico:'☑',txt:`<strong>${curUser?curUser.name:'Gabriel'}</strong> adicionou item ao checklist de <strong>${t.title}</strong>`,dt:fmt()});openCard(tid);renderBoard();}
-function addComm(tid){const t=tasks.find(x=>x.id===tid);const v=document.getElementById('comm-new')?.value.trim();if(!t||!v)return;t.comments.push({u:curUser?curUser.i:'GA',txt:v,dt:fmt()});log.unshift({ico:'💬',txt:`<strong>${curUser?curUser.name:'Gabriel'}</strong> comentou em <strong>${t.title}</strong>`,dt:fmt()});openCard(tid);}
+function addChk(tid){const t=tasks.find(x=>x.id===tid);const v=document.getElementById('chk-new')?.value.trim();if(!t||!v)return;t.checklist.push({t:v,d:false});log.unshift({ico:'☑',txt:`<strong>${curUser?curUser.name:"Gabriel"}</strong> adicionou item ao checklist de <strong>${t.title}</strong>`,dt:fmt()});openCard(tid);renderBoard();}
+function addComm(tid){const t=tasks.find(x=>x.id===tid);const v=document.getElementById('comm-new')?.value.trim();if(!t||!v)return;t.comments.push({u:curUser?curUser.i:'GA',txt:v,dt:fmt()});log.unshift({ico:'💬',txt:`<strong>${curUser?curUser.name:"Gabriel"}</strong> comentou em <strong>${t.title}</strong>`,dt:fmt()});openCard(tid);}
 function savePT(tid,v){const t=tasks.find(x=>x.id===tid);if(t)t.probTitle=v;}
 function savePD(tid,v){const t=tasks.find(x=>x.id===tid);if(t)t.probDesc=v;}
 function saveTitleF(tid,v){const t=tasks.find(x=>x.id===tid);if(t){t.title=v;const el=document.getElementById('ctit-'+tid);if(el)el.textContent=v;saveData();}}
@@ -311,10 +311,10 @@ function saveDueF(tid,v){const t=tasks.find(x=>x.id===tid);if(t){t.due=v;renderB
 
 function addCustLbl(tid){const t=tasks.find(x=>x.id===tid);const v=document.getElementById('cust-in')?.value.trim();if(!t||!v)return;if(!(t.customLabels||[]).includes(v)){t.customLabels=(t.customLabels||[]);t.customLabels.push(v);}openCard(tid);renderBoard();}
 function removeCustLbl(tid,lbl){const t=tasks.find(x=>x.id===tid);if(!t)return;t.customLabels=(t.customLabels||[]).filter(l=>l!==lbl);openCard(tid);renderBoard();}
-function chgStatus(tid,s){const t=tasks.find(x=>x.id===tid);if(t){t.status=s;log.unshift({ico:'🔄',txt:`<strong>${curUser?curUser.name:'Gabriel'}</strong> moveu <strong>${t.title}</strong> para <strong>${cols.find(c=>c.id===s)?.title||s}</strong>`,dt:fmt()});renderBoard();}}
+function chgStatus(tid,s){const t=tasks.find(x=>x.id===tid);if(t){t.status=s;log.unshift({ico:'🔄',txt:`<strong>${curUser?curUser.name:"Gabriel"}</strong> moveu <strong>${t.title}</strong> para <strong>${cols.find(c=>c.id===s)?.title||s}</strong>`,dt:fmt()});renderBoard();}}
 function chgUrg(tid,u){const t=tasks.find(x=>x.id===tid);if(t){t.urgency=u;renderBoard();}}
 function togLbl(tid,lbl){const t=tasks.find(x=>x.id===tid);if(!t)return;if((t.labels||[]).includes(lbl)){t.labels=t.labels.filter(l=>l!==lbl);}else{t.labels=(t.labels||[]);if(lbl==='prob')t.labels=t.labels.filter(l=>l!=='solved');if(lbl==='solved')t.labels=t.labels.filter(l=>l!=='prob'&&l!=='size');t.labels.push(lbl);}openCard(tid);renderBoard();}
-function quickDone(tid){const t=tasks.find(x=>x.id===tid);if(!t)return;t.status='done';log.unshift({ico:'✅',txt:`<strong>${curUser?curUser.name:'Gabriel'}</strong> concluiu <strong>${t.title}</strong>`,dt:fmt()});closeM();renderBoard();}
+function quickDone(tid){const t=tasks.find(x=>x.id===tid);if(!t)return;t.status='done';log.unshift({ico:'✅',txt:`<strong>${curUser?curUser.name:"Gabriel"}</strong> concluiu <strong>${t.title}</strong>`,dt:fmt()});closeM();renderBoard();}
 function openNew(){const id=idC++;tasks.unshift({id,title:'Nova tarefa',status:'todo',urgency:'medium',user:'GA',cat:'Anúncios',due:today,labels:[],probTitle:'',probDesc:'',checklist:[],comments:[],imgs:[],customLabels:[]});renderBoard();openCard(id);}
 function addCard(cid){const id=idC++;tasks.unshift({id,title:'Nova tarefa',status:cid,urgency:'medium',user:curUser?curUser.i:'GA',cat:'Anúncios',due:'',labels:[],probTitle:'',probDesc:'',checklist:[],comments:[],imgs:[],customLabels:[]});renderBoard();openCard(id);}
 let dragTaskId=null;
