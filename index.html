@@ -209,6 +209,39 @@ body{background:var(--bg);color:var(--wht);font-family:'Inter',sans-serif;font-s
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--bdrg);border-radius:2px}
 @keyframes rpblink{0%,100%{opacity:1}50%{opacity:.2}}
+/* PONTO */
+.ponto-card{background:var(--bg2);border:1px solid var(--bdr);border-radius:12px;padding:18px;margin-bottom:12px}
+.ponto-card.gold-border{border-color:var(--bdrg)}
+.ponto-sec-title{font-size:10px;font-weight:700;color:var(--gold);letter-spacing:1.2px;font-family:'Rajdhani',sans-serif;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.ponto-sec-title::before{content:'';display:inline-block;width:3px;height:10px;background:var(--gold);border-radius:2px}
+.ponto-status-pill{font-size:11px;padding:4px 12px;border-radius:20px;font-weight:600;display:inline-flex;align-items:center;gap:5px}
+.ponto-status-pill.working{background:rgba(76,175,125,0.15);color:var(--grn);border:1px solid rgba(76,175,125,0.3)}
+.ponto-status-pill.offline{background:rgba(255,255,255,0.05);color:var(--wht3);border:1px solid var(--bdr)}
+.ponto-clock{font-family:'Rajdhani',sans-serif;font-size:44px;font-weight:700;color:var(--wht);text-align:center;letter-spacing:2px;margin:8px 0 4px}
+.ponto-session{font-size:13px;color:var(--wht3);text-align:center;margin-bottom:14px;min-height:18px}
+.ponto-btn-row{display:flex;gap:10px}
+.ponto-btn{flex:1;padding:13px;border-radius:9px;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:'Rajdhani',sans-serif;letter-spacing:.5px;transition:.2s}
+.ponto-btn.entrada{background:var(--grn);color:#000}
+.ponto-btn.entrada:hover{background:#5DCF92;transform:translateY(-1px)}
+.ponto-btn.entrada:disabled{background:var(--bg4);color:var(--wht3);cursor:not-allowed;transform:none}
+.ponto-btn.saida{background:var(--red);color:#fff}
+.ponto-btn.saida:hover{background:#FF6666;transform:translateY(-1px)}
+.ponto-btn.saida:disabled{background:var(--bg4);color:var(--wht3);cursor:not-allowed;transform:none}
+.ponto-prog-bar{height:10px;background:var(--bg4);border-radius:5px;overflow:hidden;margin-bottom:5px}
+.ponto-prog-fill{height:100%;border-radius:5px;transition:.5s}
+.ponto-stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ponto-stat{background:var(--bg3);border-radius:8px;padding:10px 12px}
+.ponto-stat-val{font-size:20px;font-weight:700;font-family:'Rajdhani',sans-serif;margin-bottom:2px}
+.ponto-stat-lbl{font-size:10px;color:var(--wht3)}
+.ponto-reg{display:flex;justify-content:space-between;align-items:center;padding:8px 10px;border-radius:7px;background:var(--bg3);margin-bottom:5px;font-size:12px}
+.ponto-reg.open{background:rgba(76,175,125,0.08);border:1px solid rgba(76,175,125,0.2)}
+.ponto-loc{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--wht3);margin-top:10px}
+.ponto-loc-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.emp-card{background:var(--bg3);border:1px solid var(--bdr);border-radius:9px;padding:12px;cursor:pointer;transition:.2s;border-left:3px solid transparent}
+.emp-card:hover{border-color:var(--bdrg)}
+.emp-card.active-emp{border-color:var(--gold);background:var(--golda)}
+.emp-prog{height:4px;background:var(--bg4);border-radius:2px;overflow:hidden;margin-top:8px}
+.emp-prog-fill{height:100%;border-radius:2px;transition:.4s}
 </style>
 </head>
 <body>
@@ -231,6 +264,7 @@ body{background:var(--bg);color:var(--wht);font-family:'Inter',sans-serif;font-s
     <button class="mn" onclick="setView('dash',this)">Dashboard</button>
     <button class="mn" onclick="setView('prob',this)">Central de Problemas</button>
     <button class="mn" onclick="setView('log',this)">Log</button>
+    <button class="mn" onclick="setView('ponto',this)" style="border:1px solid rgba(201,168,76,0.25);color:var(--gold)">⏱ Ponto</button>
   </nav>
   <div id="hdr-right">
     <div class="user-dropdown" id="user-dd" onclick="toggleUserMenu()">
@@ -281,6 +315,7 @@ body{background:var(--bg);color:var(--wht);font-family:'Inter',sans-serif;font-s
     <div style="font-size:15px;font-weight:700;color:var(--wht);margin-bottom:12px;font-family:'Rajdhani',sans-serif;letter-spacing:1px">LOG DE ATIVIDADES</div>
     <div id="llist"></div>
   </div>
+  <div id="pontov" style="display:none;flex:1;overflow-y:auto;padding:20px;flex-direction:column;gap:14px"></div>
 </div>
 <div id="footer"><div class="footer-script">Cronos esporte</div></div>
 <div id="mbg"><div id="mod"></div></div>
@@ -311,18 +346,20 @@ let tasks=[
   {id:11,title:'Nova tarefa',status:'overdue',urgency:'medium',user:'ER',cat:'Anúncios',due:'',labels:[],probTitle:'',probDesc:'',checklist:[],comments:[],imgs:[],customLabels:[],creator:'ER',createdAt:fmt()},
   {id:12,title:'oloco gente',status:'overdue',urgency:'urgent',user:'RO',cat:'Devoluções',due:'2026-04-25',labels:['prob'],probTitle:'A pois é',probDesc:'Notas fiscais bloqueadas pelo financeiro.',checklist:[{t:'Listar',d:true},{t:'Processar',d:false}],comments:[],imgs:[],customLabels:[],creator:'RO',createdAt:'24/04 10:00'},
 ];
-let actLog=[
-  {user:'GA',qual:'Fraco',task:'CESTO DE ROUPA',dt:fmt()},
-  {user:'GA',qual:'Fraco',task:'carrinho de feira',dt:fmt()},
-  {user:'RO',qual:'Ruim',task:'BALANÇA',dt:fmt()},
-  {user:'RO',qual:'Ruim',task:'4 potes herméticos',dt:fmt()},
-];
+let actLog=[];
 let sysAlerts=['Produtos com score baixo exigem revisão de margem.','Concorrentes Full reduzem a exposição orgânica.'];
 let curView='board',curF='all',idC=13,editC=null,metaVal=0;
 const META=42000;
 
+function addLog(ico,action,taskTitle){
+  const u=USERS[curUser]||USERS.GA;
+  actLog.unshift({ico,user:curUser,action,task:taskTitle,dt:fmt()});
+  if(actLog.length>50)actLog=actLog.slice(0,50);
+  if(curView==='log')renderLog();
+}
+
 function toggleRPanel(){const rp=document.getElementById('rpanel');const btn=document.getElementById('panel-toggle');const collapsed=rp.classList.toggle('collapsed');btn.classList.toggle('flipped',collapsed);btn.title=collapsed?'Expandir painel':'Recolher painel';}
-function setView(v,el){curView=v;document.querySelectorAll('.mn').forEach(b=>b.classList.remove('active'));if(el)el.classList.add('active');const fb=document.getElementById('fbar');const rw=document.getElementById('rpanel-wrap');fb.style.display=v==='board'?'flex':'none';if(rw)rw.style.display=v==='board'?'flex':'none';['bv','dv','pv','lv'].forEach(id=>document.getElementById(id).style.display='none');if(v==='board'){document.getElementById('bv').style.display='flex';renderBoard();}if(v==='dash'){document.getElementById('dv').style.display='flex';renderDash();}if(v==='prob'){document.getElementById('pv').style.display='flex';renderProbs();}if(v==='log'){document.getElementById('lv').style.display='flex';renderLog();}}
+function setView(v,el){curView=v;document.querySelectorAll('.mn').forEach(b=>b.classList.remove('active'));if(el)el.classList.add('active');const fb=document.getElementById('fbar');const rw=document.getElementById('rpanel-wrap');fb.style.display=v==='board'?'flex':'none';if(rw)rw.style.display=v==='board'?'flex':'none';['bv','dv','pv','lv','pontov'].forEach(id=>{const el2=document.getElementById(id);if(el2)el2.style.display='none';});if(v==='board'){document.getElementById('bv').style.display='flex';renderBoard();}if(v==='dash'){document.getElementById('dv').style.display='flex';renderDash();}if(v==='prob'){document.getElementById('pv').style.display='flex';renderProbs();}if(v==='log'){document.getElementById('lv').style.display='flex';renderLog();}if(v==='ponto'){document.getElementById('pontov').style.display='flex';renderPonto();}}['bv','dv','pv','lv'].forEach(id=>document.getElementById(id).style.display='none');if(v==='board'){document.getElementById('bv').style.display='flex';renderBoard();}if(v==='dash'){document.getElementById('dv').style.display='flex';renderDash();}if(v==='prob'){document.getElementById('pv').style.display='flex';renderProbs();}if(v==='log'){document.getElementById('lv').style.display='flex';renderLog();}}
 function setF(f,el){curF=f;document.querySelectorAll('.fp').forEach(b=>b.classList.remove('active'));if(el)el.classList.add('active');renderBoard();}
 function getFilt(){const q=(document.getElementById('srch').value||'').toLowerCase();return tasks.filter(t=>{if(q&&!t.title.toLowerCase().includes(q))return false;if(curF==='mine')return t.user===curUser;if(curF==='today')return isDT(t)||t.due===today;if(curF==='urgent')return t.urgency==='urgent';if(curF==='problem')return(t.labels||[]).some(l=>l==='prob'||l==='size');return true;});}
 
@@ -436,14 +473,14 @@ function openCard(id){
           <span style="display:inline-block;width:3px;height:10px;background:var(--gold);border-radius:2px"></span>COMENTÁRIOS E ATIVIDADE
           <button style="margin-left:auto;font-size:10px;padding:3px 8px;border-radius:5px;border:1px solid var(--bdr);background:none;color:var(--wht3);cursor:pointer">Mostrar detalhes</button>
         </div>
-        <textarea class="comm-textarea" placeholder="Escrever um comentário detalhado..." oninput="this.nextElementSibling.textContent=this.value.length+'/2000'"></textarea>
+        <textarea class="comm-textarea" id="comm-right-${t.id}" placeholder="Escrever um comentário detalhado..." oninput="this.nextElementSibling.textContent=this.value.length+'/2000'"></textarea>
         <div class="comm-len">0/2000</div>
         <div class="comm-toolbar">
           <button class="comm-tool">📎</button>
           <button class="comm-tool">@</button>
           <button class="comm-tool">😊</button>
           <button class="comm-tool">📋</button>
-          <button class="mbtn pri" style="padding:5px 12px;font-size:11px;margin-left:auto">Comentar</button>
+          <button class="mbtn pri" onclick="addCommRight(${t.id})" style="padding:5px 12px;font-size:11px;margin-left:auto">Comentar</button>
         </div>
         ${commH?`<div style="margin-top:12px">${commH}</div>`:''}
       </div>
@@ -459,20 +496,21 @@ function closeM(){document.getElementById('mbg').classList.remove('open');}
 document.getElementById('mbg').addEventListener('click',function(e){if(e.target===this)closeM();});
 function toggleChk(tid,idx){const t=tasks.find(x=>x.id===tid);if(t){t.checklist[idx].d=!t.checklist[idx].d;openCard(tid);renderBoard();}}
 function delChk(tid,idx){const t=tasks.find(x=>x.id===tid);if(t){t.checklist.splice(idx,1);openCard(tid);}}
-function addChk(tid){const t=tasks.find(x=>x.id===tid);const v=document.getElementById('chk-new')?.value.trim();if(!t||!v)return;t.checklist.push({t:v,d:false});openCard(tid);renderBoard();}
-function addComm(tid){const t=tasks.find(x=>x.id===tid);const v=document.getElementById('comm-new')?.value.trim();if(!t||!v)return;t.comments.push({u:curUser,txt:v,dt:fmt()});openCard(tid);}
+function addChk(tid){const t=tasks.find(x=>x.id===tid);const v=document.getElementById('chk-new')?.value.trim();if(!t||!v)return;t.checklist.push({t:v,d:false});addLog('checklist','adicionou item ao checklist de',t.title);openCard(tid);renderBoard();}
+function addComm(tid){const t=tasks.find(x=>x.id===tid);const v=document.getElementById('comm-new')?.value.trim();if(!t||!v)return;t.comments.push({u:curUser,txt:v,dt:fmt()});addLog('comentar','comentou',t.title);openCard(tid);}
+function addCommRight(tid){const t=tasks.find(x=>x.id===tid);const ta=document.getElementById(`comm-right-${tid}`);const v=ta?.value.trim();if(!t||!v)return;t.comments.push({u:curUser,txt:v,dt:fmt()});addLog('comentar','comentou',t.title);openCard(tid);}
 function savePT(tid,v){const t=tasks.find(x=>x.id===tid);if(t)t.probTitle=v;}
 function savePD(tid,v){const t=tasks.find(x=>x.id===tid);if(t)t.probDesc=v;}
 function addCustLblSel(tid){const t=tasks.find(x=>x.id===tid);const v=document.getElementById('cust-sel')?.value;if(!t||!v)return;if(!(t.customLabels||[]).includes(v)){t.customLabels=(t.customLabels||[]);t.customLabels.push(v);}openCard(tid);renderBoard();}
 function removeCustLbl(tid,lbl){const t=tasks.find(x=>x.id===tid);if(!t)return;t.customLabels=(t.customLabels||[]).filter(l=>l!==lbl);openCard(tid);renderBoard();}
-function chgStatus(tid,s){const t=tasks.find(x=>x.id===tid);if(t){t.status=s;renderBoard();}}
+function chgStatus(tid,s){const t=tasks.find(x=>x.id===tid);if(t){const colName=cols.find(c=>c.id===s)?.title||s;addLog('mover',`moveu para ${colName}`,t.title);t.status=s;renderBoard();}}
 function chgUrg(tid,u){const t=tasks.find(x=>x.id===tid);if(t){t.urgency=u;renderBoard();}}
 function chgDue(tid,v){const t=tasks.find(x=>x.id===tid);if(t){t.due=v;renderBoard();}}
-function chgResp(tid,uid){const t=tasks.find(x=>x.id===tid);if(!t)return;t.user=uid;const sel=document.getElementById(`resp-sel-${tid}`);if(sel){sel.querySelectorAll('.resp-opt').forEach(el=>el.classList.remove('sel'));const clk=sel.querySelector(`[onclick*="'${uid}'"]`);if(clk)clk.classList.add('sel');}renderBoard();}
-function togLbl(tid,lbl){const t=tasks.find(x=>x.id===tid);if(!t)return;if((t.labels||[]).includes(lbl)){t.labels=t.labels.filter(l=>l!==lbl);}else{t.labels=(t.labels||[]);if(lbl==='prob')t.labels=t.labels.filter(l=>l!=='solved');if(lbl==='solved')t.labels=t.labels.filter(l=>l!=='prob'&&l!=='size');t.labels.push(lbl);}openCard(tid);renderBoard();}
-function quickDone(tid){const t=tasks.find(x=>x.id===tid);if(!t)return;t.status='done';actLog.unshift({user:curUser,qual:'OK',task:t.title,dt:fmt()});closeM();renderBoard();}
-function openNew(){const id=idC++;tasks.unshift({id,title:'Nova tarefa',status:'todo',urgency:'medium',user:curUser,cat:'Anúncios',due:today,labels:[],probTitle:'',probDesc:'',checklist:[],comments:[],imgs:[],customLabels:[],creator:curUser,createdAt:fmt()});renderBoard();openCard(id);}
-function addCard(cid){const id=idC++;tasks.unshift({id,title:'Nova tarefa',status:cid,urgency:'medium',user:curUser,cat:'Anúncios',due:'',labels:[],probTitle:'',probDesc:'',checklist:[],comments:[],imgs:[],customLabels:[],creator:curUser,createdAt:fmt()});renderBoard();openCard(id);}
+function chgResp(tid,uid){const t=tasks.find(x=>x.id===tid);if(!t)return;t.user=uid;const sel=document.getElementById(`resp-sel-${tid}`);if(sel){sel.querySelectorAll('.resp-opt').forEach(el=>el.classList.remove('sel'));const clk=sel.querySelector(`[onclick*="'${uid}'"]`);if(clk)clk.classList.add('sel');}addLog('responsavel','atribuiu para '+(USERS[uid]?.name||uid),t.title);renderBoard();}
+function togLbl(tid,lbl){const t=tasks.find(x=>x.id===tid);if(!t)return;if((t.labels||[]).includes(lbl)){t.labels=t.labels.filter(l=>l!==lbl);}else{t.labels=(t.labels||[]);if(lbl==='prob'){t.labels=t.labels.filter(l=>l!=='solved');addLog('problema','marcou problema em',t.title);}if(lbl==='solved')t.labels=t.labels.filter(l=>l!=='prob'&&l!=='size');t.labels.push(lbl);}openCard(tid);renderBoard();}
+function quickDone(tid){const t=tasks.find(x=>x.id===tid);if(!t)return;t.status='done';addLog('concluir','concluiu',t.title);closeM();renderBoard();}
+function openNew(){const id=idC++;tasks.unshift({id,title:'Nova tarefa',status:'todo',urgency:'medium',user:curUser,cat:'Anúncios',due:today,labels:[],probTitle:'',probDesc:'',checklist:[],comments:[],imgs:[],customLabels:[],creator:curUser,createdAt:fmt()});addLog('nova_tarefa','criou uma nova tarefa','Nova tarefa');renderBoard();openCard(id);}
+function addCard(cid){const id=idC++;const colName=cols.find(c=>c.id===cid)?.title||cid;tasks.unshift({id,title:'Nova tarefa',status:cid,urgency:'medium',user:curUser,cat:'Anúncios',due:'',labels:[],probTitle:'',probDesc:'',checklist:[],comments:[],imgs:[],customLabels:[],creator:curUser,createdAt:fmt()});addLog('nova_tarefa',`adicionou tarefa em ${colName}`,'Nova tarefa');renderBoard();openCard(id);}
 function startEdit(cid){if(editC)finEdit(editC);editC=cid;const col=cols.find(c=>c.id===cid);const span=document.getElementById('ct-'+cid);if(!span||!col)return;const inp=document.createElement('input');inp.className='ctinput';inp.value=col.title;inp.onblur=()=>finEdit(cid);inp.onkeydown=e=>{if(e.key==='Enter')finEdit(cid);if(e.key==='Escape'){editC=null;renderBoard();}};span.replaceWith(inp);inp.focus();inp.select();}
 function finEdit(cid){editC=null;const inp=document.querySelector('.ctinput');if(!inp)return;const col=cols.find(c=>c.id===cid);if(col&&inp.value.trim())col.title=inp.value.trim();renderBoard();}
 function openCP(cid,e){e.stopPropagation();const p=document.getElementById('cp');p.innerHTML=CCOLS.map(c=>`<div class="cdotc" style="background:${c}" onclick="setCC('${cid}','${c}')"></div>`).join('');p.style.top=e.clientY+6+'px';p.style.left=e.clientX+'px';p.classList.add('open');setTimeout(()=>document.addEventListener('click',()=>p.classList.remove('open'),{once:true}),50);}
@@ -490,7 +528,193 @@ document.addEventListener('click',function(e){const m=document.getElementById('u
 function renderDash(){const done=tasks.filter(t=>t.status==='done').length;const ov=tasks.filter(isOv).length;const prob=tasks.filter(t=>(t.labels||[]).some(l=>l==='prob'||l==='size')).length;const tdT=tasks.filter(isDT).length;const pct=tasks.length>0?Math.round(done/tasks.length*100):0;const uStats=Object.entries(USERS).filter(([k])=>k!=='CS').map(([uid,usr])=>{const mine=tasks.filter(t=>t.user===uid);const d=mine.filter(t=>t.status==='done').length;const p=mine.length>0?Math.round(d/mine.length*100):0;return{uid,usr,total:mine.length,done:d,late:mine.filter(isOv).length,p};}).sort((a,b)=>b.p-a.p);const mPct=Math.min(Math.round(metaVal/META*100),100);const hit=metaVal>=META,close=metaVal>=META*0.8&&!hit;const barColor=hit?'var(--grn)':close?'var(--org)':'var(--gold)';document.getElementById('dv').innerHTML=`<div style="font-size:15px;font-weight:700;font-family:'Rajdhani',sans-serif;letter-spacing:1px;color:var(--wht);margin-bottom:14px">DASHBOARD — VISÃO GERAL</div><div class="dm-grid"><div class="dm"><div class="dm-val" style="color:var(--gold)">${tasks.length}</div><div class="dm-lbl">Total de Tarefas</div></div><div class="dm"><div class="dm-val" style="color:var(--grn)">${done}</div><div class="dm-lbl">Concluídas</div></div><div class="dm"><div class="dm-val" style="color:var(--red)">${prob}</div><div class="dm-lbl">Com Problema</div></div><div class="dm"><div class="dm-val" style="color:var(--org)">${ov}</div><div class="dm-lbl">Vencidas</div></div></div><div class="meta-box" style="margin-top:12px"><div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px"><div><div style="font-size:14px;font-weight:600;color:var(--wht);font-family:'Rajdhani',sans-serif;letter-spacing:.5px">🎯 META DE VENDAS SEMANAL</div><div style="font-size:11px;color:var(--wht3);margin-top:2px">Objetivo: ${fmtM(META)}/semana</div></div><span style="font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;background:${hit?'var(--grna)':close?'var(--orga)':'var(--reda)'};color:${hit?'var(--grn)':close?'var(--org)':'var(--red)'}">${hit?'META BATIDA ✅':close?'QUASE LÁ ⚡':'EM ANDAMENTO 📊'}</span></div><div style="display:flex;align-items:baseline;gap:6px;margin-bottom:12px"><span style="font-size:32px;font-weight:700;color:var(--gold);font-family:'Rajdhani',sans-serif">${fmtM(metaVal)}</span><span style="font-size:14px;color:var(--wht3)">de</span><span style="font-size:16px;color:var(--wht3)">${fmtM(META)}</span></div><div class="meta-bar-wrap"><div class="meta-bar" style="width:${mPct}%;background:${barColor};min-width:${mPct>0?4:0}px">${mPct>15?`<span style="font-size:10px;font-weight:700;color:#000">${mPct}%</span>`:''}</div></div><div style="display:flex;justify-content:space-between;font-size:10px;color:var(--wht3);margin-bottom:10px"><span>R$ 0</span><span>${fmtM(META*0.5)}</span><span>${fmtM(META)}</span></div><div style="font-size:12px;color:var(--wht2);padding:10px 12px;background:var(--bg3);border-radius:8px;border-left:3px solid var(--gold);line-height:1.6">${hit?'🎉 Meta batida! Semana que vem: <strong>reparos, melhorias e novas ideias</strong>.':'📢 Meta ainda não batida. Foco total em <strong>vendas e conversão</strong>!'}</div><div style="display:flex;gap:8px;margin-top:10px"><input id="meta-inp" type="number" placeholder="Valor vendido R$..." value="${metaVal||''}" style="flex:1;background:var(--bg3);border:1px solid var(--bdr);border-radius:6px;color:var(--wht);padding:7px 10px;font-size:13px;outline:none;font-family:'Inter',sans-serif"><button onclick="updMeta()" style="background:var(--gold);color:#000;border:none;border-radius:6px;padding:7px 16px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Rajdhani',sans-serif;letter-spacing:.5px">Atualizar</button></div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px"><div><div style="font-size:13px;font-weight:700;font-family:'Rajdhani',sans-serif;letter-spacing:.5px;color:var(--wht);border-bottom:1px solid var(--bdr);padding-bottom:7px;margin-bottom:10px">RANKING DE PERFORMANCE</div>${uStats.map((s,i)=>`<div class="rank-row"><div style="font-size:16px;width:24px">${['🥇','🥈','🥉','4º'][i]}</div><div class="av" style="background:${s.usr.c};color:${s.usr.t};width:24px;height:24px;font-size:10px;border-radius:6px">${s.usr.i}</div><div style="flex:1"><div style="font-size:12px;font-weight:600">${s.usr.name}</div><div style="font-size:10px;color:var(--wht3)">${s.done}/${s.total} · ${s.late} atr.</div></div><div class="rbar-w"><div class="rbar" style="width:${s.p}%"></div></div><div style="font-size:12px;color:var(--gold);font-weight:700;width:34px;text-align:right;font-family:'Rajdhani',sans-serif">${s.p}%</div></div>`).join('')}</div><div><div style="font-size:13px;font-weight:700;font-family:'Rajdhani',sans-serif;letter-spacing:.5px;color:var(--wht);border-bottom:1px solid var(--bdr);padding-bottom:7px;margin-bottom:10px">PERFORMANCE GERAL</div><div style="background:var(--bg2);border:1px solid var(--bdrg);border-radius:10px;padding:20px;text-align:center"><div style="font-size:44px;font-weight:700;color:var(--gold);font-family:'Rajdhani',sans-serif">${pct}%</div><div style="font-size:11px;color:var(--wht3);margin:6px 0 12px">Tarefas concluídas</div><div style="height:8px;background:var(--bg4);border-radius:4px;overflow:hidden"><div style="height:8px;background:var(--gold);width:${pct}%;border-radius:4px"></div></div></div></div></div>`;}
 function updMeta(){const v=parseFloat(document.getElementById('meta-inp')?.value||0);metaVal=isNaN(v)?0:v;renderDash();}
 function renderProbs(){const probs=tasks.filter(t=>(t.labels||[]).some(l=>l==='prob'||l==='size')).sort((a,b)=>({urgent:0,high:1,medium:2,low:3}[a.urgency]||2)-({urgent:0,high:1,medium:2,low:3}[b.urgency]||2));const getCol=id=>(cols.find(c=>c.id===id)||{title:id}).title;document.getElementById('plist').innerHTML=probs.length===0?'<div style="text-align:center;color:var(--wht3);padding:50px">Nenhum problema ativo!</div>':probs.map(t=>{const sz=(t.labels||[]).includes('size')&&!(t.labels||[]).includes('prob');const u=USERS[t.user]||USERS.GA;return`<div class="prob-card" style="${sz?'border-left-color:var(--org);border-color:rgba(224,122,48,0.25)':''}" onclick="setView('board',document.querySelector('.mn'));openCard(${t.id})"><div style="display:flex;align-items:center;gap:10px;margin-bottom:${t.probDesc?'8':'0'}px"><div style="font-size:18px">${sz?'⚡':'⚠'}</div><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;color:var(--wht);margin-bottom:2px">${t.title}</div>${t.probTitle?`<div style="font-size:12px;color:${sz?'var(--org)':'var(--red)'};font-weight:500">${t.probTitle}</div>`:''}</div><span style="font-size:10px;padding:3px 9px;border-radius:4px;font-weight:700;background:${sz?'var(--orga)':'var(--reda)'};color:${sz?'var(--org)':'var(--red)'}">${sz?'FALTA TAMANHO':'TENHO UM PROBLEMA'}</span></div>${t.probDesc?`<div style="font-size:12px;color:var(--wht2);margin-bottom:5px;padding:6px 8px;background:var(--bg3);border-radius:5px;line-height:1.5">${t.probDesc}</div>`:''}<div style="display:flex;align-items:center;gap:8px"><div class="av" style="background:${u.c};color:${u.t};width:18px;height:18px;font-size:8px;border-radius:4px">${u.i}</div><span style="font-size:11px;color:var(--wht3)">${u.name} · ${t.cat} · ${getCol(t.status)} · Prazo: ${t.due||'—'}</span></div></div>`;}).join('');}
-function renderLog(){document.getElementById('llist').innerHTML=actLog.map(l=>{const u=USERS[l.user]||USERS.GA;return`<div class="log-item"><div class="av" style="background:${u.c};color:${u.t};width:24px;height:24px;font-size:9px;border-radius:6px;flex-shrink:0">${u.i}</div><span class="log-txt"><strong>${u.name}</strong>${l.action?' '+l.action+' em':''} ${l.task?`<strong>${l.task}</strong>`:''}</span><span class="log-time">${l.dt||''}</span></div>`;}).join('');}
+function renderLog(){
+  const llist=document.getElementById('llist');
+  if(!llist)return;
+  if(actLog.length===0){llist.innerHTML='<div style="text-align:center;color:var(--wht3);padding:40px;font-size:13px">Nenhuma atividade registrada ainda.</div>';return;}
+  llist.innerHTML=actLog.map(l=>{
+    const u=USERS[l.user]||USERS.GA;
+    const icos={criar:'📝',mover:'🔄',concluir:'✅',comentar:'💬',problema:'⚠',checklist:'☑',etiqueta:'🏷',responsavel:'👤',nova_tarefa:'➕',ponto_entrada:'🟢',ponto_saida:'🔴'};
+    const ico=icos[l.ico]||'📋';
+    return`<div class="log-item">
+      <span style="font-size:16px;flex-shrink:0">${ico}</span>
+      <div class="av" style="background:${u.c};color:${u.t};width:24px;height:24px;font-size:9px;border-radius:6px;flex-shrink:0">${u.i}</div>
+      <span class="log-txt"><strong>${u.name}</strong> ${l.action}${l.task?` em <strong>${l.task}</strong>`:''}</span>
+      <span class="log-time">${l.dt||''}</span>
+    </div>`;
+  }).join('');
+}
+// ===================== SISTEMA DE PONTO =====================
+const PONTO_USERS={GA:{...USERS.GA,pin:'1234'},RO:{...USERS.RO,pin:'1111'},ER:{...USERS.ER,pin:'2222'},GS:{...USERS.GS,pin:'3333'}};
+const WEEK_GOAL_SEC=72000; // 20h
+const MONTH_GOAL_SEC=288000; // 80h
+let pontoData={}; // {userId: [{start, end, date}]}
+let pontoTick=null;
+let selAdminEmp=null;
+
+function padZ(n){return String(n).padStart(2,'0');}
+function fmtDur(sec){const h=Math.floor(sec/3600),m=Math.floor((sec%3600)/60);return h>0?`${h}h ${padZ(m)}m`:`${padZ(m)}m`;}
+function weekStartMs(){const d=new Date();const day=d.getDay()||7;d.setHours(0,0,0,0);d.setDate(d.getDate()-day+1);return d.getTime();}
+function monthStartMs(){return new Date(new Date().getFullYear(),new Date().getMonth(),1).getTime();}
+
+function getPontoRecs(uid){return pontoData[uid]||[];}
+function getOpenRec(uid){return getPontoRecs(uid).find(r=>r.start&&!r.end);}
+
+function computeSecs(uid,filterFn){
+  const now=Date.now();
+  let total=getPontoRecs(uid).filter(r=>r.end&&filterFn(r.start)).reduce((s,r)=>s+(r.end-r.start)/1000,0);
+  const open=getOpenRec(uid);
+  if(open&&filterFn(open.start))total+=(now-open.start)/1000;
+  return total;
+}
+
+function punchIn(){
+  const open=getOpenRec(curUser);if(open)return;
+  if(!pontoData[curUser])pontoData[curUser]=[];
+  pontoData[curUser].unshift({start:Date.now(),end:null,date:today});
+  renderPonto();
+}
+
+function punchOut(){
+  const open=getOpenRec(curUser);if(!open)return;
+  open.end=Date.now();
+  renderPonto();
+}
+
+function renderPonto(){
+  const pv=document.getElementById('pontov');if(!pv)return;
+  const isAdmin=curUser==='GA';
+
+  // Start tick
+  if(pontoTick)clearInterval(pontoTick);
+  pontoTick=setInterval(()=>{
+    const clkEl=document.getElementById('ponto-clock');
+    if(clkEl){const d=new Date();clkEl.textContent=`${padZ(d.getHours())}:${padZ(d.getMinutes())}:${padZ(d.getSeconds())}`;}
+    const sessEl=document.getElementById('ponto-sess');
+    if(sessEl){const open=getOpenRec(curUser);sessEl.textContent=open?`Sessão atual: ${fmtDur(Math.floor((Date.now()-open.start)/1000))}`:'Aguardando entrada...';}
+    // update admin live sessions
+    if(isAdmin){Object.keys(PONTO_USERS).forEach(uid=>{const el=document.getElementById(`emp-sess-${uid}`);if(el){const op=getOpenRec(uid);el.textContent=op?`🟢 ${fmtDur(Math.floor((Date.now()-op.start)/1000))}`:'⚪ Offline';}});}
+  },1000);
+
+  const ws=weekStartMs(),ms2=monthStartMs();
+  const weekSec=computeSecs(curUser,s=>s>=ws);
+  const monthSec=computeSecs(curUser,s=>s>=ms2);
+  const weekPct=Math.min(100,Math.round(weekSec/WEEK_GOAL_SEC*100));
+  const monthPct=Math.min(100,Math.round(monthSec/MONTH_GOAL_SEC*100));
+  const earned=Math.min(750,(monthSec/MONTH_GOAL_SEC)*750);
+  const open=getOpenRec(curUser);
+  const isWorking=!!open;
+  const d=new Date();
+  const clockStr=`${padZ(d.getHours())}:${padZ(d.getMinutes())}:${padZ(d.getSeconds())}`;
+  const todayRecs=getPontoRecs(curUser).filter(r=>r.end&&r.date===today);
+  const u=USERS[curUser]||USERS.GA;
+
+  // Admin view
+  let adminHTML='';
+  if(isAdmin){
+    adminHTML=`<div class="ponto-card gold-border">
+      <div class="ponto-sec-title">VISÃO GERAL DA EQUIPE</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+        ${Object.entries(PONTO_USERS).map(([uid,usr])=>{
+          const ws2=weekStartMs();
+          const wSec=computeSecs(uid,s=>s>=ws2);
+          const wPct=Math.min(100,Math.round(wSec/WEEK_GOAL_SEC*100));
+          const op=getOpenRec(uid);
+          const working=!!op;
+          return`<div class="emp-card ${selAdminEmp===uid?'active-emp':''}" onclick="selAdminEmp='${uid}';renderPonto()">
+            <div style="display:flex;align-items:center;gap:8px">
+              <div class="av-md" style="background:${usr.c};color:${usr.t}">${usr.i}</div>
+              <div style="flex:1">
+                <div style="font-size:13px;font-weight:600;color:var(--wht)">${usr.name}</div>
+                <div id="emp-sess-${uid}" style="font-size:11px;color:${working?'var(--grn)':'var(--wht3)'}">${working?`🟢 ${fmtDur(Math.floor((Date.now()-op.start)/1000))}`:'⚪ Offline'}</div>
+              </div>
+            </div>
+            <div class="emp-prog"><div class="emp-prog-fill" style="width:${wPct}%;background:${usr.t}"></div></div>
+            <div style="font-size:10px;color:var(--wht3);margin-top:4px">${fmtDur(wSec)} esta semana (${wPct}%)</div>
+          </div>`;
+        }).join('')}
+      </div>
+      ${selAdminEmp?adminEmpDetail(selAdminEmp):'<div style="font-size:12px;color:var(--wht3);text-align:center;padding:8px">Clique em um funcionário para ver detalhes</div>'}
+    </div>`;
+  }
+
+  pv.innerHTML=`
+    <div style="max-width:520px;width:100%;margin:0 auto">
+      ${adminHTML}
+      <div class="ponto-card gold-border">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+          <div style="display:flex;align-items:center;gap:10px">
+            <div class="av-md" style="background:${u.c};color:${u.t};width:44px;height:44px;font-size:14px;border-radius:9px">${u.i}</div>
+            <div>
+              <div style="font-size:16px;font-weight:600;color:var(--wht)">${u.name}</div>
+              <div style="font-size:11px;color:var(--wht3)">${u.role} · Meta: 20h/semana</div>
+            </div>
+          </div>
+          <span class="ponto-status-pill ${isWorking?'working':'offline'}">${isWorking?'🟢 Trabalhando':'⚪ Disponível'}</span>
+        </div>
+        <div class="ponto-sec-title">PROGRESSO DA SEMANA</div>
+        <div class="ponto-prog-bar"><div class="ponto-prog-fill" style="width:${weekPct}%;background:${weekPct>=100?'var(--grn)':'var(--gold)'}"></div></div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--wht3);margin-bottom:14px"><span>${fmtDur(weekSec)} feitas</span><span>${weekPct>=100?'Meta atingida! 🎉':'faltam '+fmtDur(Math.max(0,WEEK_GOAL_SEC-weekSec))}</span></div>
+        <div class="ponto-sec-title">REGISTRO DE PONTO</div>
+        <div class="ponto-clock" id="ponto-clock">${clockStr}</div>
+        <div class="ponto-session" id="ponto-sess">${isWorking?`Sessão atual: ${fmtDur(Math.floor((Date.now()-open.start)/1000))}`:'Aguardando entrada...'}</div>
+        <div class="ponto-btn-row">
+          <button class="ponto-btn entrada" onclick="punchIn()" ${isWorking?'disabled':''}>Entrada</button>
+          <button class="ponto-btn saida" onclick="punchOut()" ${!isWorking?'disabled':''}>Saída</button>
+        </div>
+        <div class="ponto-loc" id="ponto-loc"><div class="ponto-loc-dot" style="background:#888"></div><span>Obtendo localização...</span></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+        <div class="ponto-card"><div class="ponto-stats-grid">
+          <div class="ponto-stat"><div class="ponto-stat-val" style="color:var(--gold)">${fmtDur(weekSec)}</div><div class="ponto-stat-lbl">Esta semana</div></div>
+          <div class="ponto-stat"><div class="ponto-stat-val" style="color:${weekPct>=100?'var(--grn)':'var(--org)'}">${weekPct}%</div><div class="ponto-stat-lbl">Da meta</div></div>
+        </div></div>
+        <div class="ponto-card"><div class="ponto-stats-grid">
+          <div class="ponto-stat"><div class="ponto-stat-val" style="color:var(--grn)">R$ ${earned.toFixed(0)}</div><div class="ponto-stat-lbl">Ganhos</div></div>
+          <div class="ponto-stat"><div class="ponto-stat-val" style="color:#7BAEE8">${monthPct}%</div><div class="ponto-stat-lbl">Mês</div></div>
+        </div></div>
+      </div>
+      <div class="ponto-card">
+        <div class="ponto-sec-title">REGISTROS DE HOJE</div>
+        ${todayRecs.length===0?'<div style="font-size:12px;color:var(--wht3);text-align:center;padding:12px">Nenhum registro hoje</div>':todayRecs.map(r=>{const inT=new Date(r.start),outT=new Date(r.end);return`<div class="ponto-reg"><span style="font-family:monospace;color:var(--wht2)">${padZ(inT.getHours())}:${padZ(inT.getMinutes())} → ${padZ(outT.getHours())}:${padZ(outT.getMinutes())}</span><span style="font-weight:600;color:var(--wht)">${fmtDur(Math.floor((r.end-r.start)/1000))}</span></div>`;}).join('')}
+        ${isWorking?`<div class="ponto-reg open"><span style="font-family:monospace;color:var(--grn)">${padZ(new Date(open.start).getHours())}:${padZ(new Date(open.start).getMinutes())} → em andamento</span><span style="font-weight:600;color:var(--grn)">⏱</span></div>`:''}
+      </div>
+    </div>`;
+
+  // Get location
+  if(navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(pos=>{
+      const el=document.getElementById('ponto-loc');
+      if(el)el.innerHTML=`<div class="ponto-loc-dot" style="background:var(--grn)"></div><span>Lat: ${pos.coords.latitude.toFixed(4)} · Lng: ${pos.coords.longitude.toFixed(4)}</span>`;
+    },()=>{
+      const el=document.getElementById('ponto-loc');
+      if(el)el.innerHTML=`<div class="ponto-loc-dot" style="background:var(--org)"></div><span>Localização não obtida</span>`;
+    },{timeout:6000});
+  }
+}
+
+function adminEmpDetail(uid){
+  const usr=PONTO_USERS[uid]||USERS[uid];
+  const ws2=weekStartMs(),ms3=monthStartMs();
+  const wSec=computeSecs(uid,s=>s>=ws2);
+  const mSec=computeSecs(uid,s=>s>=ms3);
+  const wPct=Math.min(100,Math.round(wSec/WEEK_GOAL_SEC*100));
+  const mPct=Math.min(100,Math.round(mSec/MONTH_GOAL_SEC*100));
+  const earnedEmp=Math.min(750,(mSec/MONTH_GOAL_SEC)*750);
+  const recs=getPontoRecs(uid).slice(0,10);
+  return`<div style="border-top:1px solid var(--bdr);padding-top:12px;margin-top:4px">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+      <div class="av-md" style="background:${usr.c};color:${usr.t}">${usr.i}</div>
+      <div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--wht)">${usr.name}</div><div style="font-size:10px;color:var(--wht3)">${usr.role}</div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;flex:2">
+        ${[['Semana',fmtDur(wSec)+` (${wPct}%)`,wPct>=100?'var(--grn)':'var(--gold)'],['Mês',fmtDur(mSec)+` (${mPct}%)`,mPct>=100?'var(--grn)':'#7BAEE8'],['Ganhos','R$ '+earnedEmp.toFixed(0),'var(--grn)']].map(([l,v,c])=>`<div style="background:var(--bg4);border-radius:6px;padding:6px 8px;text-align:center"><div style="font-size:11px;font-weight:600;color:${c}">${v}</div><div style="font-size:9px;color:var(--wht3)">${l}</div></div>`).join('')}
+      </div>
+    </div>
+    <div style="font-size:10px;color:var(--wht3);margin-bottom:6px;text-transform:uppercase;letter-spacing:.8px">Últimos registros</div>
+    ${recs.length===0?`<div style="font-size:12px;color:var(--wht3);padding:8px">Sem registros ainda</div>`:recs.map(r=>{const inT=new Date(r.start);const dur=r.end?Math.floor((r.end-r.start)/1000):null;return`<div class="ponto-reg ${!r.end?'open':''}"><div><div style="font-family:monospace;font-size:12px">${padZ(inT.getHours())}:${padZ(inT.getMinutes())} ${r.end?`→ ${padZ(new Date(r.end).getHours())}:${padZ(new Date(r.end).getMinutes())}`:' → em andamento'}</div><div style="font-size:10px;color:var(--wht3)">${r.date||''}</div></div><span style="font-weight:600;color:${!r.end?'var(--grn)':'var(--wht)'}">${dur?fmtDur(dur):'⏱'}</span></div>`;}).join('')}
+  </div>`;
+}
+// ===================== END PONTO =====================
 document.getElementById('bv').style.display='flex';
 renderBoard();
 </script>
