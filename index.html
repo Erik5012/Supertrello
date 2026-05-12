@@ -1098,10 +1098,7 @@ function adminEmpDetail(uid){
   setInterval(saveHistoryBackup,5000);
   window.addEventListener('beforeunload',saveHistoryBackup);
 })();
-// ===== REIMPORTAR CARDS DO PRINT =====
-(function(){
-  function getOrCreateCol(title,color){
-    let col=cols.find(c=>String(c.title).toLowerCase()===String(title).toLowerCase());
+
     if(col)return col.id;
 
     const id='col_'+title.toLowerCase()
