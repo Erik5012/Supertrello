@@ -1160,7 +1160,220 @@ function adminEmpDetail(uid){
 
 
 renderBoard();
-  
+ // ===== SUPERTRELLO BANCO ONLINE SEM PERDER DADOS LOCAIS =====
+(function(){
+  if(window.__SUPERTRELLO_FIREBASE_SYNC__)return;
+  window.__SUPERTRELLO_FIREBASE_SYNC__=true;
+
+  const STORAGE_KEY='supertrello-cronos-system:v1';
+  const CLIENT_KEY='supertrello-client-id:v1';
+  const FIREBASE_STATE_PATH='supertrello/estado';
+
+  const firebaseConfig={
+    apiKey:"AIzaSyDSsBEG0hZUuBzmNDh-lzNqyJNb8Uq-RmE",
+    authDomain:"supertrello.firebaseapp.com",
+    databaseURL:"https://supertrello-default-rtdb.firebaseio.com",
+    projectId:"supertrello",
+    storageBucket:"supertrello.firebasestorage.app",
+    messagingSenderId:"793300072601",
+    appId:"1:793300072601:web:f60e43d28b59d5a641e008",
+    measurementId:"G-RG8K31QFR2"
+  };
+
+  let clientId=localStorage.getItem(CLIENT_KEY);
+  if(!clientId){
+    clientId='cliente_'+Date.now()+'_'+Math.random().toString(16).slice(2);
+    localStorage.setItem(CLIENT_KEY,clientId);
+  }
+
+  let remoteRef=null;
+  let applyingRemote=false;
+  let hasLoadedLocal=false;
+  let hasAcceptedRemote=false;
+
+  function loadScript(src){
+    return new Promise((resolve,reject)=>{
+      if(document.querySelector(`script[src="${src}"]`))return resolve();
+      const s=document.createElement('script');
+      s.src=src;
+      s.onload=resolve;
+      s.onerror=reject;
+      document.head.appendChild(s);
+    });
+  }
+
+  function getState(){
+    return {
+      curUser,
+      cols,
+      tasks,
+      actLog,
+      sysAlerts,
+      idC,
+      metaVal,
+      pontoData:typeof pontoData!=='undefined'?pontoData:{},
+      selAdminEmp:typeof selAdminEmp!=='undefined'?selAdminEmp:null,
+      updatedAt:Date.now(),
+      updatedBy:clientId
+    };
+  }
+
+  function stateCount(state){
+    return Array.isArray(state?.tasks)?state.tasks.length:0;
+  }
+
+  function applyState(state){
+    if(!state||typeof state!=='object')return;
+
+    if(state.curUser&&USERS[state.curUser])curUser=state.curUser;
+    if(Array.isArray(state.cols))cols=state.cols;
+    if(Array.isArray(state.tasks))tasks=state.tasks;
+    if(Array.isArray(state.actLog))actLog=state.actLog;
+    if(Array.isArray(state.sysAlerts))sysAlerts=state.sysAlerts;
+    if(Number.isFinite(state.idC))idC=state.idC;
+    if(Number.isFinite(state.metaVal))metaVal=state.metaVal;
+    if(typeof pontoData!=='undefined'&&state.pontoData)pontoData=state.pontoData;
+    if(typeof selAdminEmp!=='undefined')selAdminEmp=state.selAdminEmp||null;
+
+    const maiorId=tasks.reduce((max,t)=>Math.max(max,Number(t.id)||0),0);
+    idC=Math.max(idC,maiorId+1);
+
+    if(USERS[curUser]){
+      const u=USERS[curUser];
+      const av=document.getElementById('hdr-av');
+      const name=document.getElementById('hdr-name');
+      if(av){
+        av.textContent=u.i;
+        av.style.background=u.c;
+        av.style.color=u.t;
+      }
+      if(name)name.textContent=`${u.name} · ${u.role}`;
+    }
+
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(state));
+    renderBoard();
+    if(curView==='dash')renderDash();
+    if(curView==='prob')renderProbs();
+    if(curView==='log')renderLog();
+    if(curView==='ponto')renderPonto();
+  }
+
+  function salvarLocal(){
+    try{
+      localStorage.setItem(STORAGE_KEY,JSON.stringify(getState()));
+    }catch(e){
+      console.warn('Nao foi possivel salvar localmente.',e);
+    }
+  }
+
+  function carregarLocal(){
+    try{
+      const raw=localStorage.getItem(STORAGE_KEY);
+      if(!raw)return false;
+      const localState=JSON.parse(raw);
+      applyState(localState);
+      hasLoadedLocal=true;
+      console.log('Dados locais carregados:', stateCount(localState), 'tarefas');
+      return true;
+    }catch(e){
+      console.warn('Nao foi possivel carregar localmente.',e);
+      return false;
+    }
+  }
+
+  function salvarNuvem(){
+    if(applyingRemote)return;
+    salvarLocal();
+
+    if(!remoteRef)return;
+
+    remoteRef.set(getState()).catch(e=>{
+      console.warn('Nao foi possivel salvar no banco online.',e);
+    });
+  }
+
+  async function iniciarFirebase(){
+    try{
+      await loadScript('https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js');
+      await loadScript('https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js');
+
+      if(!firebase.apps.length)firebase.initializeApp(firebaseConfig);
+
+      remoteRef=firebase.database().ref(FIREBASE_STATE_PATH);
+
+      const firstSnap=await remoteRef.get();
+      const remoteState=firstSnap.val();
+      const localState=getState();
+
+      if(!remoteState){
+        await remoteRef.set(localState);
+        hasAcceptedRemote=true;
+        alert('Seus dados locais foram enviados para o banco online com segurança.');
+      }else{
+        const localQtd=stateCount(localState);
+        const remoteQtd=stateCount(remoteState);
+
+        if(hasLoadedLocal&&localQtd>0){
+          const usarLocal=confirm(
+            `Encontrei dados neste computador (${localQtd} tarefas) e dados no banco online (${remoteQtd} tarefas).\n\n`+
+            `Clique em OK para ENVIAR OS DADOS DESTE COMPUTADOR para o banco.\n`+
+            `Clique em Cancelar para CARREGAR OS DADOS DO BANCO neste computador.`
+          );
+
+          if(usarLocal){
+            await remoteRef.set(localState);
+            hasAcceptedRemote=true;
+            alert('Dados deste computador enviados para o banco online.');
+          }else{
+            applyingRemote=true;
+            applyState(remoteState);
+            applyingRemote=false;
+            hasAcceptedRemote=true;
+          }
+        }else{
+          applyingRemote=true;
+          applyState(remoteState);
+          applyingRemote=false;
+          hasAcceptedRemote=true;
+        }
+      }
+
+      remoteRef.on('value',snapshot=>{
+        const state=snapshot.val();
+        if(!state||!hasAcceptedRemote)return;
+        if(state.updatedBy===clientId)return;
+
+        applyingRemote=true;
+        applyState(state);
+        applyingRemote=false;
+      });
+
+      console.log('Supertrello conectado ao Firebase sem apagar dados locais.');
+    }catch(e){
+      console.warn('Firebase nao conectou. O sistema continua salvando neste computador.',e);
+    }
+  }
+
+  window.salvarSupertrello=salvarNuvem;
+
+  window.enviarDadosLocaisParaBanco=function(){
+    if(confirm('Enviar tudo que esta neste computador para o banco online?')){
+      salvarNuvem();
+      alert('Dados locais enviados para o banco.');
+    }
+  };
+
+  carregarLocal();
+
+  document.getElementById('bv').style.display='flex';
+  renderBoard();
+
+  iniciarFirebase();
+
+  setInterval(salvarNuvem,1200);
+  window.addEventListener('beforeunload',salvarNuvem);
+})();
+ 
 </script>
 </body>
 </html>
