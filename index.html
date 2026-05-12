@@ -1098,6 +1098,205 @@ function adminEmpDetail(uid){
   setInterval(saveHistoryBackup,5000);
   window.addEventListener('beforeunload',saveHistoryBackup);
 })();
+// ===== REIMPORTAR CARDS DO PRINT =====
+(function(){
+  function getOrCreateCol(title,color){
+    let col=cols.find(c=>String(c.title).toLowerCase()===String(title).toLowerCase());
+    if(col)return col.id;
+
+    const id='col_'+title.toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+      .replace(/[^a-z0-9]+/g,'_')+'_'+Date.now()+Math.floor(Math.random()*999);
+
+    cols.push({id,title,color:color||'#C9A84C'});
+    return id;
+  }
+
+  function addTask(data){
+    const exists=tasks.some(t=>t.title.trim().toLowerCase()===data.title.trim().toLowerCase());
+    if(exists)return;
+
+    const status=getOrCreateCol(data.coluna,data.color);
+
+    tasks.push({
+      id:idC++,
+      title:data.title,
+      status,
+      urgency:data.urgency||'medium',
+      user:data.user||'GA',
+      cat:data.cat||'Anúncios',
+      due:data.due||'',
+      labels:data.labels||[],
+      probTitle:data.probTitle||'',
+      probDesc:data.probDesc||'',
+      checklist:data.checklist||[],
+      comments:data.comments||[],
+      imgs:[],
+      imgData:[],
+      customLabels:data.customLabels||[],
+      creator:data.user||'GA',
+      createdAt:fmt()
+    });
+  }
+
+  [
+    {
+      coluna:'mural',
+      color:'#5B8FD4',
+      title:'TODO ANUNCIO NOVO DEVE SER ANUNCIADO NA SHOPEE E NO MERCADO LIVRE, QUANDO O PRODUTO ESTIVER A DISPOSIÇÃO NO ESTOQUE. E NA ABA DE PRODUTOS NOVOS.',
+      user:'GA',
+      due:'2026-05-04',
+      urgency:'urgent',
+      customLabels:['IMPORTANTE','URGENTE']
+    },
+    {
+      coluna:'mural',
+      color:'#5B8FD4',
+      title:'ATENÇÃO! ANUNCIOS NOVOS PRECISAM IR TANTO PARA SHOPEE QUANTO PARA O MERCADO LIVRE, SENDO DE SUMA IMPORTÂNCIA E ATENÇÃO QUE AS FOTOS/VÍDEOS E DESCRIÇÃO INSERIDAS NO ANÚNCIO DE CADA PRODUTO SEJAM COMPATÍVEIS COM O ESTOQUE FÍSICO.',
+      user:'GA',
+      due:'2026-05-04',
+      urgency:'urgent',
+      customLabels:['IMPORTANTE','URGENTE']
+    },
+    {
+      coluna:'FLEX',
+      color:'#E07A30',
+      title:'TRANSPORTADORA',
+      user:'RO',
+      customLabels:['Robson']
+    },
+    {
+      coluna:'FLEX',
+      color:'#E07A30',
+      title:'Olá, tudo bem? Meu nome é [SEU NOME], sou responsável pela loja *Rosbons* aqui no Rio de Janeiro. Estamos buscando uma transportadora parceira para operar o *Envio Flex* pelo Mercado Livre. Gostaríamos de entender se vocês atendem o *Rio de Janeiro* e como funciona a parceria. Poderia me passar mais informações sobre: cobertura de bairros atendidos no RJ, tabela de preços e como fazer o credenciamento? Aguardo retorno. Obrigado!',
+      user:'RO'
+    },
+    {
+      coluna:'FLEX',
+      color:'#E07A30',
+      title:'Nome do responsável: Razão social: Cronos comercio CNPJ: 39.831.117/0001-52 Endereço de coleta: rua dois de fevereiro 33 engenho de dentro Quantidade de volumes por dia: 10 email:',
+      user:'RO'
+    },
+    {
+      coluna:'PRODUTOS NOVOS',
+      color:'#4CAF7D',
+      title:'FORNECEDOR IMPORIENTE; CX212: KIT 2 TÁBUAS PARA CORTE EM BAMBU 28X18X1CM E 32X22X1CM, 0.600GR, CUSTO R$ 15.84, 24 UNIDADES.',
+      user:'GA',
+      due:'2026-05-08',
+      urgency:'high',
+      labels:['prob'],
+      probTitle:'COM PROBLEMA',
+      customLabels:['COM PROBLEMA']
+    },
+    {
+      coluna:'PRODUTOS NOVOS',
+      color:'#4CAF7D',
+      title:'Fornecedor Top Rio Comercial NF: 46563 - TRC1093 - Incluir Anúncio/Upseller/Estoque. Assento estofado couro MDF 78x40x5 cm, Peso 3.400KG, 5 unidades',
+      user:'GA',
+      due:'2026-05-09',
+      urgency:'high',
+      customLabels:['IMPORTANTE']
+    },
+    {
+      coluna:'PRODUTOS NOVOS',
+      color:'#4CAF7D',
+      title:'Fornecedor Top Rio Comercial NF: 46563 - TRC0958 - Incluir Anúncio/Upseller/Estoque. Fruteira de metal 59x32x10 cm, Peso 5 Kg, 4 unidades',
+      user:'GA',
+      due:'2026-05-09',
+      urgency:'high',
+      customLabels:['IMPORTANTE']
+    },
+    {
+      coluna:'sugestão para full',
+      color:'#FFD700',
+      title:'FAVOR INCLUIR CX212 KIT 2 TÁBUAS CORTE EM BAMBÚ, 46203 COM A DEVIDA VARIAÇÃO DE CORES: PRETA/PRATA/BRONZE E CX210 KIT COM 2 CAIXAS, JF5261 CESTO ORGANIZADOR MACRAMÊ BRANCO/MARROM/CINZA NA LISTA DO FULL PARA ENVIO.',
+      user:'GA',
+      due:'2026-05-06',
+      urgency:'high',
+      customLabels:['IMPORTANTE'],
+      checklist:[
+        {t:'Separar itens',d:true},
+        {t:'Enviar para full',d:true},
+        {t:'Conferir variações',d:false}
+      ]
+    },
+    {
+      coluna:'Reparo de sistema',
+      color:'#FF4D4D',
+      title:'Corrigir anúncio. Adicionar variações de cores',
+      user:'GA',
+      urgency:'urgent',
+      labels:['prob'],
+      probTitle:'COM PROBLEMA',
+      customLabels:['COM PROBLEMA']
+    },
+    {
+      coluna:'Reparo de sistema',
+      color:'#FF4D4D',
+      title:'olhar anuncios no mercado livre com pontuação baixa.',
+      user:'GA',
+      urgency:'high',
+      customLabels:['ESTRATEGIA DA SEMANA']
+    },
+    {
+      coluna:'Reparo de sistema',
+      color:'#FF4D4D',
+      title:'ATUALIZAR SKU DE ESTANTES 5 PRATELEIRAS DE 9742 PARA JF5267',
+      user:'GA',
+      due:'2026-05-06',
+      urgency:'high',
+      customLabels:['IMPORTANTE']
+    },
+    {
+      coluna:'Estrategia de anuncios',
+      color:'#7F77DD',
+      title:'Atualizar/revisar, produto 5215. SHP1, SHP2, já com estoque atualizado. sem vendas.',
+      user:'GA',
+      due:'2026-05-08',
+      urgency:'high',
+      customLabels:['IMPORTANTE']
+    },
+    {
+      coluna:'Estrategia de anuncios',
+      color:'#7F77DD',
+      title:'14/04/26 ATUALIZAÇÃO DE ANÚNCIOS PARADOS/SEM VENDAS - 20206, 1012, IY30008, 5252 (PARA CORES BEGE E ROSA), 46203 (INCLUIR CORES NA VARIAÇÃO: PRATA, PRETA, DOURADA), CX239 (INCLUIR CORES NA VARIAÇÃO: PRETA, MARFIM), CX254, 17009, YGD9891A, 12670 (SOMENTE OS POTES DE VIDRO PARA CONDIMENTOS), 8514, 1445, 5224, 9381, 5187, 9399 (ESSA SEM GUARDA SOL).',
+      user:'GA',
+      due:'2026-05-04',
+      urgency:'urgent',
+      customLabels:['URGENTE'],
+      checklist:[
+        {t:'Revisar lista',d:true},
+        {t:'Atualizar anúncios',d:false},
+        {t:'Conferir vendas',d:false}
+      ]
+    },
+    {
+      coluna:'migração de anuncios',
+      color:'#5DCAA5',
+      title:'MIGRAÇÃO PARA MERCADO LIVRE',
+      user:'GA',
+      checklist:[
+        {t:'Migrar anúncios',d:true},
+        {t:'Conferir produtos',d:true},
+        {t:'Finalizar',d:true}
+      ]
+    },
+    {
+      coluna:'migração de anuncios',
+      color:'#5DCAA5',
+      title:'VERIFICAR PRODUTOS COM VENDAS E ENVIAR PARA SHOPEE UM, PERGUNTAR NOVAS INTRUÇOES.',
+      user:'GA',
+      urgency:'high',
+      customLabels:['IMPORTANTE']
+    }
+  ].forEach(addTask);
+
+  if(typeof saveState==='function')saveState();
+  if(typeof salvarSupertrello==='function')salvarSupertrello();
+  renderBoard();
+
+  alert('Cards do print reimportados com sucesso.');
+})();
 
  
 </script>
