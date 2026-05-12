@@ -142,6 +142,12 @@ body{background:var(--bg);color:var(--wht);font-family:'Inter',sans-serif;font-s
 .mod-label{font-size:10px;color:var(--wht3);text-transform:uppercase;letter-spacing:1px;font-weight:600;margin-bottom:4px}
 .mod-header-top{display:flex;align-items:flex-start;justify-content:space-between}
 .mod-title{font-size:18px;font-weight:600;color:var(--wht);line-height:1.4;flex:1;margin-right:10px}
+.mod-title-input{font-size:18px;font-weight:600;color:var(--wht);background:transparent;border:none;border-bottom:2px solid transparent;outline:none;font-family:'Inter',sans-serif;flex:1;margin-right:10px;line-height:1.4;width:100%;padding:2px 4px;border-radius:4px;transition:.2s}
+.mod-title-input:hover{background:var(--bg3);border-bottom-color:var(--bdrg)}
+.mod-title-input:focus{background:var(--bg3);border-bottom-color:var(--gold)}
+.card.dragging{opacity:.35;transform:scale(.96)}
+.cards.drag-over{background:rgba(201,168,76,0.07);outline:2px dashed var(--bdrg);border-radius:8px}
+.col.col-drag-over .cards{background:rgba(201,168,76,0.1);outline:2px dashed var(--gold);border-radius:8px}
 .mod-actions{display:flex;gap:6px}
 .mod-action-btn{background:none;border:1px solid var(--bdr);color:var(--wht3);width:30px;height:30px;border-radius:6px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:.15s}
 .mod-action-btn:hover{border-color:var(--bdrg);color:var(--gold)}
@@ -370,14 +376,32 @@ function renderBoard(){
   board.innerHTML='';
   cols.forEach(col=>{
     const ct=filt.filter(t=>t.status===col.id);
-    const div=document.createElement('div');div.className='col';
-    div.innerHTML=`<div class="col-hdr"><div class="cdot" style="background:${col.color}" onclick="openCP('${col.id}',event)"></div><span class="ctitle" id="ct-${col.id}" ondblclick="startEdit('${col.id}')">${col.title}</span><span class="ccnt">${ct.length}</span><button class="col-menu-btn" onclick="delCol('${col.id}')">⋯</button></div><div class="cards">${ct.map(t=>cardHTML(t)).join('')}</div><button class="cadd" onclick="addCard('${col.id}')">+ Adicionar tarefa</button>`;
+    const div=document.createElement('div');
+    div.className='col';
+    div.id='col-'+col.id;
+    div.ondragover=(e)=>onColDragOver(e,col.id);
+    div.ondrop=(e)=>onColDrop(e,col.id);
+    div.innerHTML=`
+      <div class="col-hdr" draggable="true"
+        ondragstart="onColHdrDragStart(event,'${col.id}')"
+        ondragover="onColHdrDragOver(event,'${col.id}')"
+        ondrop="onColHdrDrop(event,'${col.id}')"
+        style="cursor:grab">
+        <div class="cdot" style="background:${col.color}" onclick="openCP('${col.id}',event)"></div>
+        <span class="ctitle" id="ct-${col.id}" ondblclick="startEdit('${col.id}')">${col.title}</span>
+        <span class="ccnt">${ct.length}</span>
+        <button class="col-menu-btn" onclick="delCol('${col.id}')">⋯</button>
+      </div>
+      <div class="cards" id="cards-${col.id}">${ct.map(t=>cardHTML(t,col.id)).join('')}</div>
+      <button class="cadd" onclick="addCard('${col.id}')">+ Adicionar tarefa</button>`;
     board.appendChild(div);
   });
-  const ac=document.createElement('div');ac.className='addcol';ac.onclick=addCol;ac.innerHTML='<div class="addcol-icon">+</div><div class="addcol-txt">Nova coluna</div>';board.appendChild(ac);
+  const ac=document.createElement('div');ac.className='addcol';ac.onclick=addCol;
+  ac.innerHTML='<div class="addcol-icon">+</div><div class="addcol-txt">Nova coluna</div>';
+  board.appendChild(ac);
 }
 
-function cardHTML(t){
+function cardHTML(t,colId){
   const u=USERS[t.user]||USERS.GA;const ov=isOv(t),dt=isDT(t);
   const cd=(t.checklist||[]).filter(c=>c.d).length,cl=(t.checklist||[]).length;const pct=cl>0?Math.round(cd/cl*100):0;
   const hasPr=(t.labels||[]).includes('prob'),hasSz=(t.labels||[]).includes('size');
@@ -385,7 +409,17 @@ function cardHTML(t){
   const custH=(t.customLabels||[]).map(l=>`<span class="lbl custom">${l}</span>`).join('');
   const tdH=dt?'<span class="lbl tdlbl">PARA HOJE</span>':'';
   const urgH=t.urgency==='urgent'?'<span class="lbl urg-lbl">URGENTE</span>':'';
-  return`<div class="card ${t.urgency}" onclick="openCard(${t.id})">${(t.imgs||[]).length?`<div class="card-img-prev" style="background:${t.imgs[0]}">FOTO</div>`:''}<div class="ctit">${t.title}</div>${t.probTitle&&(hasPr||hasSz)?`<div class="pdesc">${t.probTitle}</div>`:''}<div class="clbls">${tdH}${urgH}${lblH}${custH}<span class="lbl cat">${t.cat}</span></div>${cl>0?`<div class="chkbar"><div class="chkfill" style="width:${pct}%;background:${pct===100?'var(--grn)':'var(--gold)'}"></div></div>`:''}<div class="cfoot"><div class="av" style="background:${u.c};color:${u.t}">${u.i}</div><span style="font-size:10px;color:var(--wht3)">${u.name}</span>${(t.comments||[]).length?`<span style="font-size:10px;color:var(--wht3)">💬${t.comments.length}</span>`:''} ${t.due?`<span class="cdate ${ov?'ov':dt?'td':''}">${ov?'⚠ '+t.due:dt?'📅 Hoje':t.due}</span>`:''}</div></div>`;
+  return`<div class="card ${t.urgency}" id="card-${t.id}" draggable="true"
+    ondragstart="onCardDragStart(event,${t.id},'${colId||t.status}')"
+    ondragend="onCardDragEnd(event,${t.id})"
+    onclick="openCard(${t.id})"
+    style="cursor:grab">
+    ${(t.imgData||[]).length?`<img src="${t.imgData[0]}" style="width:100%;height:44px;object-fit:cover;border-radius:5px;margin-bottom:7px">`:''
+    }<div class="ctit">${t.title}</div>${t.probTitle&&(hasPr||hasSz)?`<div class="pdesc">${t.probTitle}</div>`:''
+    }<div class="clbls">${tdH}${urgH}${lblH}${custH}<span class="lbl cat">${t.cat}</span></div>
+    ${cl>0?`<div class="chkbar"><div class="chkfill" style="width:${pct}%;background:${pct===100?'var(--grn)':'var(--gold)'}"></div></div>`:''}
+    <div class="cfoot"><div class="av" style="background:${u.c};color:${u.t}">${u.i}</div><span style="font-size:10px;color:var(--wht3)">${u.name}</span>${(t.comments||[]).length?`<span style="font-size:10px;color:var(--wht3)">💬${t.comments.length}</span>`:''} ${t.due?`<span class="cdate ${ov?'ov':dt?'td':''}">${ov?'⚠ '+t.due:dt?'📅 Hoje':t.due}</span>`:''}</div>
+  </div>`;
 }
 
 function updateRightPanel(){
@@ -402,7 +436,7 @@ function openCard(id){
   const cd=(t.checklist||[]).filter(c=>c.d).length,cl=(t.checklist||[]).length;
   const colOpts=cols.map(c=>`<option value="${c.id}"${t.status===c.id?' selected':''}>${c.title}</option>`).join('');
   const urgOpts=[['urgent','● Crítica'],['high','● Alta'],['medium','● Média'],['low','● Baixa']].map(([v,l])=>`<option value="${v}"${t.urgency===v?' selected':''}>${l}</option>`).join('');
-  const imgH=(t.imgs||[]).map(c=>`<div style="background:${c};width:100%;height:60px;border-radius:7px;margin-bottom:5px;display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--wht3);font-weight:600">FOTO</div>`).join('');
+  const imgH=(t.imgData||[]).map((src,i)=>`<div style="position:relative;display:inline-block;margin-right:5px;margin-bottom:5px"><img src="${src}" style="width:90px;height:70px;object-fit:cover;border-radius:7px;border:1px solid var(--bdr)"><button onclick="removeImg(${t.id},${i})" style="position:absolute;top:-5px;right:-5px;width:18px;height:18px;border-radius:50%;background:var(--red);border:none;color:#fff;font-size:10px;cursor:pointer;font-weight:700">✕</button></div>`).join('');
   const hasPr=(t.labels||[]).includes('prob'),hasSz=(t.labels||[]).includes('size'),hasSo=(t.labels||[]).includes('solved');
   const chkH=(t.checklist||[]).map((c,i)=>`<div class="chki"><div class="chkb${c.d?' done':''}" onclick="toggleChk(${t.id},${i})">${c.d?'✓':''}</div><span style="${c.d?'text-decoration:line-through;color:var(--wht3)':''}">${c.t}</span><button class="chk-del" onclick="delChk(${t.id},${i})">✕</button></div>`).join('');
   const commH=(t.comments||[]).map(c=>{const cu=USERS[c.u]||USERS.GA;return`<div class="comm-bubble"><div class="comm-meta"><div class="comm-av" style="background:${cu.c};color:${cu.t}">${cu.i}</div><strong style="color:var(--wht);font-size:11px">${cu.name}</strong><span style="margin-left:auto">${c.dt}</span></div><div class="comm-txt">${c.txt}</div></div>`;}).join('');
@@ -413,7 +447,7 @@ function openCard(id){
     <div class="mod-header">
       <div class="mod-label">TÍTULO DA TAREFA</div>
       <div class="mod-header-top">
-        <div class="mod-title">${t.title}</div>
+        <input class="mod-title-input" id="mod-title-${t.id}" value="${t.title}" onchange="chgTitle(${t.id},this.value)" onkeydown="if(event.key==='Enter')this.blur()" placeholder="Título da tarefa...">
         <div class="mod-actions">
           <button class="mod-action-btn">⤢</button>
           <button class="mod-action-btn">⋯</button>
@@ -424,7 +458,12 @@ function openCard(id){
     <div class="mod-body">
       <div class="mod-left">
         ${imgH}
-        <div class="upzone">🖼 Adicionar imagem<br><small style="font-size:10px;color:var(--wht3)">PNG, JPG até 5MB</small></div>
+        <div class="upzone" id="upzone-${t.id}" onclick="triggerFileInput(${t.id})" ondragover="event.preventDefault();this.style.borderColor='var(--gold)'" ondragleave="this.style.borderColor=''" ondrop="handleDrop(event,${t.id})">
+          🖼 Clique, arraste ou <strong style="color:var(--gold)">Ctrl+V</strong> para colar print
+          <br><small style="font-size:10px;color:var(--wht3)">PNG, JPG até 5MB</small>
+          <input type="file" id="fileInput-${t.id}" accept="image/*" style="display:none" onchange="handleFileInput(event,${t.id})">
+        </div>
+        <div id="img-preview-${t.id}" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px"></div>
         <div class="ms">DETALHES</div>
         <div class="mr"><span class="mrl">Status</span><select class="msel" onchange="chgStatus(${t.id},this.value)">${colOpts}</select></div>
         <div class="mr"><span class="mrl">Urgência</span><select class="msel" onchange="chgUrg(${t.id},this.value)">${urgOpts}</select></div>
@@ -504,8 +543,60 @@ function savePD(tid,v){const t=tasks.find(x=>x.id===tid);if(t)t.probDesc=v;}
 function addCustLblSel(tid){const t=tasks.find(x=>x.id===tid);const v=document.getElementById('cust-sel')?.value;if(!t||!v)return;if(!(t.customLabels||[]).includes(v)){t.customLabels=(t.customLabels||[]);t.customLabels.push(v);}openCard(tid);renderBoard();}
 function removeCustLbl(tid,lbl){const t=tasks.find(x=>x.id===tid);if(!t)return;t.customLabels=(t.customLabels||[]).filter(l=>l!==lbl);openCard(tid);renderBoard();}
 function chgStatus(tid,s){const t=tasks.find(x=>x.id===tid);if(t){const colName=cols.find(c=>c.id===s)?.title||s;addLog('mover',`moveu para ${colName}`,t.title);t.status=s;renderBoard();}}
+function chgTitle(tid,v){const t=tasks.find(x=>x.id===tid);if(t&&v.trim()){t.title=v.trim();renderBoard();}}
 function chgUrg(tid,u){const t=tasks.find(x=>x.id===tid);if(t){t.urgency=u;renderBoard();}}
 function chgDue(tid,v){const t=tasks.find(x=>x.id===tid);if(t){t.due=v;renderBoard();}}
+
+// ===== DRAG AND DROP =====
+let dragTaskId=null;
+let dragColId=null;
+
+function onCardDragStart(e,tid,colId){
+  dragTaskId=tid;dragColId=colId;
+  e.dataTransfer.effectAllowed='move';
+  setTimeout(()=>{const el=document.getElementById('card-'+tid);if(el)el.classList.add('dragging');},0);
+}
+
+function onCardDragEnd(e,tid){
+  const el=document.getElementById('card-'+tid);if(el)el.classList.remove('dragging');
+  document.querySelectorAll('.cards').forEach(c=>c.classList.remove('drag-over'));
+  document.querySelectorAll('.col').forEach(c=>c.classList.remove('col-drag-over'));
+}
+
+function onColDragOver(e,colId){
+  e.preventDefault();e.dataTransfer.dropEffect='move';
+  document.querySelectorAll('.col').forEach(c=>c.classList.remove('col-drag-over'));
+  const col=document.getElementById('col-'+colId);if(col)col.classList.add('col-drag-over');
+}
+
+function onColDrop(e,colId){
+  e.preventDefault();
+  document.querySelectorAll('.col').forEach(c=>c.classList.remove('col-drag-over'));
+  document.querySelectorAll('.cards').forEach(c=>c.classList.remove('drag-over'));
+  if(dragTaskId===null)return;
+  const t=tasks.find(x=>x.id===dragTaskId);
+  if(t&&t.status!==colId){
+    const colName=cols.find(c=>c.id===colId)?.title||colId;
+    addLog('mover',`moveu para ${colName}`,t.title);
+    t.status=colId;
+    renderBoard();
+  }
+  dragTaskId=null;dragColId=null;
+}
+
+// Column drag and drop (reorder columns)
+let dragColSrcId=null;
+function onColHdrDragStart(e,colId){dragColSrcId=colId;e.dataTransfer.effectAllowed='move';}
+function onColHdrDragOver(e,colId){e.preventDefault();}
+function onColHdrDrop(e,tgtColId){
+  e.preventDefault();
+  if(!dragColSrcId||dragColSrcId===tgtColId)return;
+  const si=cols.findIndex(c=>c.id===dragColSrcId);
+  const ti=cols.findIndex(c=>c.id===tgtColId);
+  if(si<0||ti<0)return;
+  const [col]=cols.splice(si,1);cols.splice(ti,0,col);
+  dragColSrcId=null;renderBoard();
+}
 function chgResp(tid,uid){const t=tasks.find(x=>x.id===tid);if(!t)return;t.user=uid;const sel=document.getElementById(`resp-sel-${tid}`);if(sel){sel.querySelectorAll('.resp-opt').forEach(el=>el.classList.remove('sel'));const clk=sel.querySelector(`[onclick*="'${uid}'"]`);if(clk)clk.classList.add('sel');}addLog('responsavel','atribuiu para '+(USERS[uid]?.name||uid),t.title);renderBoard();}
 function togLbl(tid,lbl){const t=tasks.find(x=>x.id===tid);if(!t)return;if((t.labels||[]).includes(lbl)){t.labels=t.labels.filter(l=>l!==lbl);}else{t.labels=(t.labels||[]);if(lbl==='prob'){t.labels=t.labels.filter(l=>l!=='solved');addLog('problema','marcou problema em',t.title);}if(lbl==='solved')t.labels=t.labels.filter(l=>l!=='prob'&&l!=='size');t.labels.push(lbl);}openCard(tid);renderBoard();}
 function quickDone(tid){const t=tasks.find(x=>x.id===tid);if(!t)return;t.status='done';addLog('concluir','concluiu',t.title);closeM();renderBoard();}
@@ -544,6 +635,81 @@ function renderLog(){
     </div>`;
   }).join('');
 }
+// ===================== IMAGENS =====================
+function triggerFileInput(tid){document.getElementById('fileInput-'+tid)?.click();}
+
+function handleFileInput(event,tid){
+  const files=event.target.files;
+  if(files)Array.from(files).forEach(f=>processImageFile(f,tid));
+}
+
+function handleDrop(event,tid){
+  event.preventDefault();
+  document.getElementById('upzone-'+tid).style.borderColor='';
+  const files=event.dataTransfer.files;
+  if(files)Array.from(files).forEach(f=>processImageFile(f,tid));
+}
+
+function processImageFile(file,tid){
+  if(!file.type.startsWith('image/'))return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const t=tasks.find(x=>x.id===tid);
+    if(!t)return;
+    if(!t.imgData)t.imgData=[];
+    t.imgData.push(e.target.result);
+    refreshImgPreview(tid);
+    addLog('criar','adicionou imagem em',t.title);
+  };
+  reader.readAsDataURL(file);
+}
+
+function refreshImgPreview(tid){
+  const t=tasks.find(x=>x.id===tid);if(!t)return;
+  const container=document.getElementById('img-preview-'+tid);if(!container)return;
+  const imgs=(t.imgData||[]);
+  container.style.display=imgs.length?'flex':'none';
+  container.innerHTML=imgs.map((src,i)=>`
+    <div style="position:relative;flex-shrink:0">
+      <img src="${src}" style="width:90px;height:70px;object-fit:cover;border-radius:7px;border:1px solid var(--bdr)">
+      <button onclick="removeImg(${tid},${i})" style="position:absolute;top:-5px;right:-5px;width:18px;height:18px;border-radius:50%;background:var(--red);border:none;color:#fff;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;line-height:1">✕</button>
+    </div>`).join('');
+}
+
+function removeImg(tid,idx){
+  const t=tasks.find(x=>x.id===tid);
+  if(t&&t.imgData){t.imgData.splice(idx,1);refreshImgPreview(tid);}
+}
+
+// Global paste listener — Ctrl+V when modal is open
+document.addEventListener('paste',function(e){
+  const modal=document.getElementById('mbg');
+  if(!modal||!modal.classList.contains('open'))return;
+  const items=e.clipboardData?.items;
+  if(!items)return;
+  // Find current open task id from upzone
+  const upzone=document.querySelector('[id^="upzone-"]');
+  if(!upzone)return;
+  const tid=parseInt(upzone.id.replace('upzone-',''));
+  if(isNaN(tid))return;
+  Array.from(items).forEach(item=>{
+    if(item.type.startsWith('image/')){
+      const file=item.getAsFile();
+      if(file)processImageFile(file,tid);
+    }
+  });
+});
+
+// Show paste feedback on upzone
+function showPasteFeedback(tid){
+  const zone=document.getElementById('upzone-'+tid);
+  if(!zone)return;
+  zone.style.borderColor='var(--gold)';
+  zone.style.background='var(--golda)';
+  setTimeout(()=>{zone.style.borderColor='';zone.style.background='';},600);
+}
+// ===================== END IMAGENS =====================
+
 // ===================== SISTEMA DE PONTO =====================
 const PONTO_USERS={GA:{...USERS.GA,pin:'1234'},RO:{...USERS.RO,pin:'1111'},ER:{...USERS.ER,pin:'2222'},GS:{...USERS.GS,pin:'3333'}};
 const WEEK_GOAL_SEC=72000; // 20h
