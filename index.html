@@ -881,8 +881,68 @@ function adminEmpDetail(uid){
   </div>`;
 }
 // ===================== END PONTO =====================
+// ===== SALVAMENTO AUTOMATICO - NAO APAGA NO F5 =====
+const STORAGE_KEY='supertrello-cronos-system:v1';
+
+function saveState(){
+  try{
+    const state={
+      curUser,
+      cols,
+      tasks,
+      actLog,
+      sysAlerts,
+      idC,
+      metaVal,
+      pontoData: typeof pontoData!=='undefined'?pontoData:{},
+      selAdminEmp: typeof selAdminEmp!=='undefined'?selAdminEmp:null
+    };
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(state));
+  }catch(e){
+    console.warn('Nao foi possivel salvar os dados.',e);
+  }
+}
+
+function loadState(){
+  try{
+    const raw=localStorage.getItem(STORAGE_KEY);
+    if(!raw)return;
+    const state=JSON.parse(raw);
+
+    if(state.curUser&&USERS[state.curUser])curUser=state.curUser;
+    if(Array.isArray(state.cols))cols=state.cols;
+    if(Array.isArray(state.tasks))tasks=state.tasks;
+    if(Array.isArray(state.actLog))actLog=state.actLog;
+    if(Array.isArray(state.sysAlerts))sysAlerts=state.sysAlerts;
+    if(Number.isFinite(state.idC))idC=state.idC;
+    if(Number.isFinite(state.metaVal))metaVal=state.metaVal;
+    if(typeof pontoData!=='undefined'&&state.pontoData)pontoData=state.pontoData;
+    if(typeof selAdminEmp!=='undefined')selAdminEmp=state.selAdminEmp||null;
+
+    const maiorId=tasks.reduce((max,t)=>Math.max(max,Number(t.id)||0),0);
+    idC=Math.max(idC,maiorId+1);
+  }catch(e){
+    console.warn('Nao foi possivel carregar os dados.',e);
+  }
+}
+
+function apagarDadosSupertrello(){
+  if(confirm('Apagar todos os dados salvos deste navegador?')){
+    localStorage.removeItem(STORAGE_KEY);
+    location.reload();
+  }
+}
+
+loadState();
 document.getElementById('bv').style.display='flex';
 renderBoard();
+
+setInterval(saveState,800);
+window.addEventListener('beforeunload',saveState);
+// ===== FIM DO SALVAMENTO AUTOMATICO =====
+
+renderBoard();
+  
 </script>
 </body>
 </html>
