@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Supertrello — Cronos System</title>
+<title>Supertrello â€” Cronos System</title>
 <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Inter:wght@300;400;500;600&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
@@ -270,24 +270,24 @@ body{background:var(--bg);color:var(--wht);font-family:'Inter',sans-serif;font-s
     <button class="mn" onclick="setView('dash',this)">Dashboard</button>
     <button class="mn" onclick="setView('prob',this)">Central de Problemas</button>
     <button class="mn" onclick="setView('log',this)">Log</button>
-    <button class="mn" onclick="setView('ponto',this)" style="border:1px solid rgba(201,168,76,0.25);color:var(--gold)">⏱ Ponto</button>
+    <button class="mn" onclick="setView('ponto',this)" style="border:1px solid rgba(201,168,76,0.25);color:var(--gold)">â± Ponto</button>
   </nav>
   <div id="hdr-right">
     <div class="user-dropdown" id="user-dd" onclick="toggleUserMenu()">
       <div class="uav-sm" id="hdr-av" style="background:#3A2A1A;color:#EF9F27">ER</div>
-      <span class="uname-sm" id="hdr-name">Erick · Catálogo &amp; Estoque</span>
-      <span style="color:var(--wht3);font-size:10px;margin-left:2px">▼</span>
+      <span class="uname-sm" id="hdr-name">Erick Â· CatÃ¡logo &amp; Estoque</span>
+      <span style="color:var(--wht3);font-size:10px;margin-left:2px">â–¼</span>
     </div>
     <button class="exit-btn" onclick="doLogout()">Sair</button>
     <button class="new-btn" onclick="openNew()">+ Nova Tarefa</button>
   </div>
 </div>
 <div id="fbar">
-  <div class="srch-wrap"><span class="srch-icon">🔍</span><input id="srch" placeholder="Buscar tarefas..." oninput="renderBoard()"></div>
+  <div class="srch-wrap"><span class="srch-icon">ðŸ”</span><input id="srch" placeholder="Buscar tarefas..." oninput="renderBoard()"></div>
   <button class="fp active" onclick="setF('all',this)">Todas</button>
   <button class="fp" onclick="setF('mine',this)">Minhas</button>
-  <button class="fp today" onclick="setF('today',this)">📅 Para Hoje</button>
-  <button class="fp urgent-fp" onclick="setF('urgent',this)">⚠ Urgentes</button>
+  <button class="fp today" onclick="setF('today',this)">ðŸ“… Para Hoje</button>
+  <button class="fp urgent-fp" onclick="setF('urgent',this)">âš  Urgentes</button>
   <button class="fp" onclick="setF('problem',this)">Com problema</button>
   <div id="fbar-r"><button class="col-add-btn" onclick="addCol()">+ Coluna</button></div>
 </div>
@@ -296,25 +296,25 @@ body{background:var(--bg);color:var(--wht);font-family:'Inter',sans-serif;font-s
   <div id="rpanel-wrap">
     <div id="rpanel">
       <div class="rp-sec">
-        <div class="rp-title"><span class="rp-title-dot"></span>NOTIFICAÇÕES<span id="notif-badge" style="background:var(--gold);color:#000;font-size:9px;padding:1px 6px;border-radius:8px;font-weight:700;margin-left:auto"></span></div>
+        <div class="rp-title"><span class="rp-title-dot"></span>NOTIFICAÃ‡Ã•ES<span id="notif-badge" style="background:var(--gold);color:#000;font-size:9px;padding:1px 6px;border-radius:8px;font-weight:700;margin-left:auto"></span></div>
         <div id="notif-list"></div>
-        <span class="see-all" onclick="setView('log',document.querySelectorAll('.mn')[3])">Ver todas atividades →</span>
+        <span class="see-all" onclick="setView('log',document.querySelectorAll('.mn')[3])">Ver todas atividades â†’</span>
       </div>
       <div class="rp-sec">
         <div class="rp-title"><span class="rp-title-dot" style="background:var(--red)"></span>ALERTAS DO SISTEMA<span style="width:7px;height:7px;border-radius:50%;background:var(--red);display:inline-block;margin-left:auto;animation:rpblink 1.5s infinite"></span></div>
         <div id="alert-list"></div>
-        <span class="see-all" onclick="setView('prob',document.querySelectorAll('.mn')[2])">Ver todos alertas →</span>
+        <span class="see-all" onclick="setView('prob',document.querySelectorAll('.mn')[2])">Ver todos alertas â†’</span>
       </div>
     </div>
     <button id="panel-toggle" onclick="toggleRPanel()" title="Recolher painel">
-      <span class="tarr">›</span>
-      <span class="tarr">›</span>
+      <span class="tarr">â€º</span>
+      <span class="tarr">â€º</span>
     </button>
   </div>
   <div id="dv"></div>
   <div id="pv">
     <div style="font-size:15px;font-weight:700;color:var(--wht);margin-bottom:3px;font-family:'Rajdhani',sans-serif;letter-spacing:1px">CENTRAL DE PROBLEMAS</div>
-    <div style="font-size:12px;color:var(--wht3);margin-bottom:14px">Tarefas com problemas — ordenadas por prioridade</div>
+    <div style="font-size:12px;color:var(--wht3);margin-bottom:14px">Tarefas com problemas â€” ordenadas por prioridade</div>
     <div id="plist"></div>
   </div>
   <div id="lv">
@@ -330,30 +330,30 @@ body{background:var(--bg);color:var(--wht);font-family:'Inter',sans-serif;font-s
 </div>
 <script>
 const CCOLS=['#5B8FD4','#FFD700','#9090A8','#4CAF7D','#FF4D4D','#E07A30','#C9A84C','#5DCAA5','#D4537E','#7F77DD'];
-const USERS={GA:{i:'GA',c:'#3A1A6A',t:'#C0A0F0',name:'Gabriel',role:'Admin'},RO:{i:'RO',c:'#1A3A2A',t:'#5DCAA5',name:'Robson',role:'Expedição'},ER:{i:'ER',c:'#3A2A1A',t:'#EF9F27',name:'Erick',role:'Catálogo & Estoque'},GS:{i:'GS',c:'#1A2A3A',t:'#85B7EB',name:'GS',role:'Suporte'},CS:{i:'CS',c:'#2A1A3A',t:'#D4A0F0',name:'Cronos shop',role:'Sistema'}};
+const USERS={GA:{i:'GA',c:'#3A1A6A',t:'#C0A0F0',name:'Gabriel',role:'Admin'},RO:{i:'RO',c:'#1A3A2A',t:'#5DCAA5',name:'Robson',role:'ExpediÃ§Ã£o'},ER:{i:'ER',c:'#3A2A1A',t:'#EF9F27',name:'Erick',role:'CatÃ¡logo & Estoque'},GS:{i:'GS',c:'#1A2A3A',t:'#85B7EB',name:'GS',role:'Suporte'},CS:{i:'CS',c:'#2A1A3A',t:'#D4A0F0',name:'Cronos shop',role:'Sistema'}};
 const today=new Date().toISOString().split('T')[0];
 const isOv=t=>t.due&&t.due<today&&t.status!=='done';
 const isDT=t=>t.due===today&&t.status!=='done';
 const fmt=()=>new Date().toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
 const fmtM=v=>v.toLocaleString('pt-BR',{style:'currency',currency:'BRL',minimumFractionDigits:0,maximumFractionDigits:0});
 let curUser='ER';
-let cols=[{id:'todo',title:'A FAZER',color:'#5B8FD4'},{id:'doing',title:'EM ANDAMENTO',color:'#FFD700'},{id:'waiting',title:'AGUARDANDO',color:'#9090A8'},{id:'done',title:'CONCLUÍDO',color:'#4CAF7D'},{id:'overdue',title:'VENCIDO',color:'#FF4D4D'}];
+let cols=[{id:'todo',title:'A FAZER',color:'#5B8FD4'},{id:'doing',title:'EM ANDAMENTO',color:'#FFD700'},{id:'waiting',title:'AGUARDANDO',color:'#9090A8'},{id:'done',title:'CONCLUÃDO',color:'#4CAF7D'},{id:'overdue',title:'VENCIDO',color:'#FF4D4D'}];
 let tasks=[
-  {id:1,title:'Nova tarefa',status:'todo',urgency:'medium',user:'GA',cat:'Anúncios',due:'2026-05-08',labels:[],probTitle:'',probDesc:'',checklist:[],comments:[],imgs:[],customLabels:[],creator:'GA',createdAt:'08/05 09:00'},
-  {id:2,title:'Anuncio CADEIRA CAMPING IDB334C — atualizar SKU',status:'todo',urgency:'urgent',user:'GA',cat:'Anúncios',due:'2026-05-07',labels:['prob'],probTitle:'SKU desatualizado',probDesc:'O SKU ainda está como 2575, precisa atualizar para ID8334C urgente.',checklist:[{t:'Atualizar SKU',d:true},{t:'Colocar upseller',d:false}],comments:[{u:'GA',txt:'Verificar estoque no CD',dt:'28/04 10:30'}],imgs:['#1A2A3A','#2A1A3A'],customLabels:[],creator:'GA',createdAt:'28/04 09:00'},
-  {id:3,title:'Atualizar anúncios parados sem vendas ML',status:'todo',urgency:'high',user:'GA',cat:'Mercado Livre',due:'2026-05-04',labels:['size'],probTitle:'A Foto tamanho GG',probDesc:'Anúncios sem opção GG cadastrada, perdendo vendas.',checklist:[{t:'20206',d:true},{t:'1012',d:true},{t:'IY30008',d:false}],comments:[],imgs:['#2A3A1A'],customLabels:['Shopee'],creator:'GA',createdAt:'29/04 10:00'},
+  {id:1,title:'Nova tarefa',status:'todo',urgency:'medium',user:'GA',cat:'AnÃºncios',due:'2026-05-08',labels:[],probTitle:'',probDesc:'',checklist:[],comments:[],imgs:[],customLabels:[],creator:'GA',createdAt:'08/05 09:00'},
+  {id:2,title:'Anuncio CADEIRA CAMPING IDB334C â€” atualizar SKU',status:'todo',urgency:'urgent',user:'GA',cat:'AnÃºncios',due:'2026-05-07',labels:['prob'],probTitle:'SKU desatualizado',probDesc:'O SKU ainda estÃ¡ como 2575, precisa atualizar para ID8334C urgente.',checklist:[{t:'Atualizar SKU',d:true},{t:'Colocar upseller',d:false}],comments:[{u:'GA',txt:'Verificar estoque no CD',dt:'28/04 10:30'}],imgs:['#1A2A3A','#2A1A3A'],customLabels:[],creator:'GA',createdAt:'28/04 09:00'},
+  {id:3,title:'Atualizar anÃºncios parados sem vendas ML',status:'todo',urgency:'high',user:'GA',cat:'Mercado Livre',due:'2026-05-04',labels:['size'],probTitle:'A Foto tamanho GG',probDesc:'AnÃºncios sem opÃ§Ã£o GG cadastrada, perdendo vendas.',checklist:[{t:'20206',d:true},{t:'1012',d:true},{t:'IY30008',d:false}],comments:[],imgs:['#2A3A1A'],customLabels:['Shopee'],creator:'GA',createdAt:'29/04 10:00'},
   {id:4,title:'Produtos novos Fornecedor Y888',status:'todo',urgency:'urgent',user:'GA',cat:'Produtos Novos',due:'2026-05-07',labels:[],probTitle:'',probDesc:'',checklist:[{t:'1638-21X16X16CM',d:false},{t:'1754-50X30X30CM',d:false}],comments:[],imgs:[],customLabels:['Urgente'],creator:'GA',createdAt:'30/04 08:00'},
-  {id:5,title:'BOLA FUTEVOLEI ID2155 estoque e anúncio',status:'todo',urgency:'medium',user:'ER',cat:'Anúncios',due:'2026-05-02',labels:['prob'],probTitle:'Estoque zerado',probDesc:'Bolas branca e verde com estoque zero mas anúncio ativo.',checklist:[{t:'Estoque amarela',d:true},{t:'Estoque branca',d:false}],comments:[],imgs:[],customLabels:[],creator:'ER',createdAt:'01/05 09:00'},
-  {id:6,title:'Nova tarefa',status:'waiting',urgency:'medium',user:'ER',cat:'Anúncios',due:'',labels:[],probTitle:'',probDesc:'',checklist:[],comments:[],imgs:[],customLabels:[],creator:'ER',createdAt:fmt()},
-  {id:7,title:'Transportadora Envio Flex RJ credenciamento',status:'waiting',urgency:'medium',user:'RO',cat:'Expedição',due:'2026-05-31',labels:[],probTitle:'',probDesc:'',checklist:[{t:'Cobertura de bairros',d:false},{t:'Tabela de preços',d:false}],comments:[{u:'RO',txt:'Aguardando retorno',dt:'29/04 14:00'}],imgs:[],customLabels:[],creator:'RO',createdAt:'29/04 14:00'},
-  {id:8,title:'teste',status:'done',urgency:'medium',user:'ER',cat:'Anúncios',due:'',labels:[],probTitle:'',probDesc:'',checklist:[],comments:[],imgs:[],customLabels:[],creator:'ER',createdAt:'07/05 18:00'},
-  {id:9,title:'Kit CX180 — PM G — criar e publicar',status:'done',urgency:'low',user:'GA',cat:'Produtos Novos',due:'2026-04-28',labels:['solved'],probTitle:'',probDesc:'',checklist:[{t:'Criar',d:true},{t:'Fotografar',d:true},{t:'Publicar',d:true}],comments:[{u:'GA',txt:'Concluído!',dt:'27/04 16:00'}],imgs:['#1A3A3A'],customLabels:[],creator:'GA',createdAt:'25/04 10:00'},
-  {id:10,title:'teste para saber se vai sumir',status:'overdue',urgency:'medium',user:'ER',cat:'Anúncios',due:'',labels:[],probTitle:'',probDesc:'',checklist:[],comments:[{u:'CS',txt:'PRECISA SKU PRODUTOS',dt:'há pouco'}],imgs:[],customLabels:[],creator:'ER',createdAt:'08/05 18:30'},
-  {id:11,title:'Nova tarefa',status:'overdue',urgency:'medium',user:'ER',cat:'Anúncios',due:'',labels:[],probTitle:'',probDesc:'',checklist:[],comments:[],imgs:[],customLabels:[],creator:'ER',createdAt:fmt()},
-  {id:12,title:'oloco gente',status:'overdue',urgency:'urgent',user:'RO',cat:'Devoluções',due:'2026-04-25',labels:['prob'],probTitle:'A pois é',probDesc:'Notas fiscais bloqueadas pelo financeiro.',checklist:[{t:'Listar',d:true},{t:'Processar',d:false}],comments:[],imgs:[],customLabels:[],creator:'RO',createdAt:'24/04 10:00'},
+  {id:5,title:'BOLA FUTEVOLEI ID2155 estoque e anÃºncio',status:'todo',urgency:'medium',user:'ER',cat:'AnÃºncios',due:'2026-05-02',labels:['prob'],probTitle:'Estoque zerado',probDesc:'Bolas branca e verde com estoque zero mas anÃºncio ativo.',checklist:[{t:'Estoque amarela',d:true},{t:'Estoque branca',d:false}],comments:[],imgs:[],customLabels:[],creator:'ER',createdAt:'01/05 09:00'},
+  {id:6,title:'Nova tarefa',status:'waiting',urgency:'medium',user:'ER',cat:'AnÃºncios',due:'',labels:[],probTitle:'',probDesc:'',checklist:[],comments:[],imgs:[],customLabels:[],creator:'ER',createdAt:fmt()},
+  {id:7,title:'Transportadora Envio Flex RJ credenciamento',status:'waiting',urgency:'medium',user:'RO',cat:'ExpediÃ§Ã£o',due:'2026-05-31',labels:[],probTitle:'',probDesc:'',checklist:[{t:'Cobertura de bairros',d:false},{t:'Tabela de preÃ§os',d:false}],comments:[{u:'RO',txt:'Aguardando retorno',dt:'29/04 14:00'}],imgs:[],customLabels:[],creator:'RO',createdAt:'29/04 14:00'},
+  {id:8,title:'teste',status:'done',urgency:'medium',user:'ER',cat:'AnÃºncios',due:'',labels:[],probTitle:'',probDesc:'',checklist:[],comments:[],imgs:[],customLabels:[],creator:'ER',createdAt:'07/05 18:00'},
+  {id:9,title:'Kit CX180 â€” PM G â€” criar e publicar',status:'done',urgency:'low',user:'GA',cat:'Produtos Novos',due:'2026-04-28',labels:['solved'],probTitle:'',probDesc:'',checklist:[{t:'Criar',d:true},{t:'Fotografar',d:true},{t:'Publicar',d:true}],comments:[{u:'GA',txt:'ConcluÃ­do!',dt:'27/04 16:00'}],imgs:['#1A3A3A'],customLabels:[],creator:'GA',createdAt:'25/04 10:00'},
+  {id:10,title:'teste para saber se vai sumir',status:'overdue',urgency:'medium',user:'ER',cat:'AnÃºncios',due:'',labels:[],probTitle:'',probDesc:'',checklist:[],comments:[{u:'CS',txt:'PRECISA SKU PRODUTOS',dt:'hÃ¡ pouco'}],imgs:[],customLabels:[],creator:'ER',createdAt:'08/05 18:30'},
+  {id:11,title:'Nova tarefa',status:'overdue',urgency:'medium',user:'ER',cat:'AnÃºncios',due:'',labels:[],probTitle:'',probDesc:'',checklist:[],comments:[],imgs:[],customLabels:[],creator:'ER',createdAt:fmt()},
+  {id:12,title:'oloco gente',status:'overdue',urgency:'urgent',user:'RO',cat:'DevoluÃ§Ãµes',due:'2026-04-25',labels:['prob'],probTitle:'A pois Ã©',probDesc:'Notas fiscais bloqueadas pelo financeiro.',checklist:[{t:'Listar',d:true},{t:'Processar',d:false}],comments:[],imgs:[],customLabels:[],creator:'RO',createdAt:'24/04 10:00'},
 ];
 let actLog=[];
-let sysAlerts=['Produtos com score baixo exigem revisão de margem.','Concorrentes Full reduzem a exposição orgânica.'];
+let sysAlerts=['Produtos com score baixo exigem revisÃ£o de margem.','Concorrentes Full reduzem a exposiÃ§Ã£o orgÃ¢nica.'];
 let curView='board',curF='all',idC=13,editC=null,metaVal=0;
 const META=42000;
 
@@ -390,7 +390,7 @@ function renderBoard(){
         <div class="cdot" style="background:${col.color}" onclick="openCP('${col.id}',event)"></div>
         <span class="ctitle" id="ct-${col.id}" ondblclick="startEdit('${col.id}')">${col.title}</span>
         <span class="ccnt">${ct.length}</span>
-        <button class="col-menu-btn" onclick="delCol('${col.id}')">⋯</button>
+        <button class="col-menu-btn" onclick="delCol('${col.id}')">â‹¯</button>
       </div>
       <div class="cards" id="cards-${col.id}">${ct.map(t=>cardHTML(t,col.id)).join('')}</div>
       <button class="cadd" onclick="addCard('${col.id}')">+ Adicionar tarefa</button>`;
@@ -418,7 +418,7 @@ function cardHTML(t,colId){
     }<div class="ctit">${t.title}</div>${t.probTitle&&(hasPr||hasSz)?`<div class="pdesc">${t.probTitle}</div>`:''
     }<div class="clbls">${tdH}${urgH}${lblH}${custH}<span class="lbl cat">${t.cat}</span></div>
     ${cl>0?`<div class="chkbar"><div class="chkfill" style="width:${pct}%;background:${pct===100?'var(--grn)':'var(--gold)'}"></div></div>`:''}
-    <div class="cfoot"><div class="av" style="background:${u.c};color:${u.t}">${u.i}</div><span style="font-size:10px;color:var(--wht3)">${u.name}</span>${(t.comments||[]).length?`<span style="font-size:10px;color:var(--wht3)">💬${t.comments.length}</span>`:''} ${t.due?`<span class="cdate ${ov?'ov':dt?'td':''}">${ov?'⚠ '+t.due:dt?'📅 Hoje':t.due}</span>`:''}</div>
+    <div class="cfoot"><div class="av" style="background:${u.c};color:${u.t}">${u.i}</div><span style="font-size:10px;color:var(--wht3)">${u.name}</span>${(t.comments||[]).length?`<span style="font-size:10px;color:var(--wht3)">ðŸ’¬${t.comments.length}</span>`:''} ${t.due?`<span class="cdate ${ov?'ov':dt?'td':''}">${ov?'âš  '+t.due:dt?'ðŸ“… Hoje':t.due}</span>`:''}</div>
   </div>`;
 }
 
@@ -426,7 +426,7 @@ function updateRightPanel(){
   const probs=tasks.filter(t=>(t.labels||[]).some(l=>l==='prob'||l==='size')&&t.status!=='done');
   const ovd=tasks.filter(isOv);
   document.getElementById('notif-badge').textContent=probs.length+ovd.length;
-  document.getElementById('notif-list').innerHTML=[probs.length?`${probs.length} tarefa(s) com problema ativo.`:'','Ranking recalculado automaticamente com base em margem, lucro e concorrência.',`${probs.length} produto(s) abaixo do padrão mínimo.`].filter(Boolean).map(n=>`<div class="notif-item">${n}</div>`).join('');
+  document.getElementById('notif-list').innerHTML=[probs.length?`${probs.length} tarefa(s) com problema ativo.`:'','Ranking recalculado automaticamente com base em margem, lucro e concorrÃªncia.',`${probs.length} produto(s) abaixo do padrÃ£o mÃ­nimo.`].filter(Boolean).map(n=>`<div class="notif-item">${n}</div>`).join('');
   document.getElementById('alert-list').innerHTML=sysAlerts.map(a=>`<div class="alert-item"><div class="alert-dot"></div><span>${a}</span></div>`).join('');
 }
 
@@ -435,23 +435,23 @@ function openCard(id){
   const u=USERS[t.user]||USERS.GA;const ov=isOv(t);
   const cd=(t.checklist||[]).filter(c=>c.d).length,cl=(t.checklist||[]).length;
   const colOpts=cols.map(c=>`<option value="${c.id}"${t.status===c.id?' selected':''}>${c.title}</option>`).join('');
-  const urgOpts=[['urgent','● Crítica'],['high','● Alta'],['medium','● Média'],['low','● Baixa']].map(([v,l])=>`<option value="${v}"${t.urgency===v?' selected':''}>${l}</option>`).join('');
-  const imgH=(t.imgData||[]).map((src,i)=>`<div style="position:relative;display:inline-block;margin-right:5px;margin-bottom:5px"><img src="${src}" style="width:90px;height:70px;object-fit:cover;border-radius:7px;border:1px solid var(--bdr)"><button onclick="removeImg(${t.id},${i})" style="position:absolute;top:-5px;right:-5px;width:18px;height:18px;border-radius:50%;background:var(--red);border:none;color:#fff;font-size:10px;cursor:pointer;font-weight:700">✕</button></div>`).join('');
+  const urgOpts=[['urgent','â— CrÃ­tica'],['high','â— Alta'],['medium','â— MÃ©dia'],['low','â— Baixa']].map(([v,l])=>`<option value="${v}"${t.urgency===v?' selected':''}>${l}</option>`).join('');
+  const imgH=(t.imgData||[]).map((src,i)=>`<div style="position:relative;display:inline-block;margin-right:5px;margin-bottom:5px"><img src="${src}" style="width:90px;height:70px;object-fit:cover;border-radius:7px;border:1px solid var(--bdr)"><button onclick="removeImg(${t.id},${i})" style="position:absolute;top:-5px;right:-5px;width:18px;height:18px;border-radius:50%;background:var(--red);border:none;color:#fff;font-size:10px;cursor:pointer;font-weight:700">âœ•</button></div>`).join('');
   const hasPr=(t.labels||[]).includes('prob'),hasSz=(t.labels||[]).includes('size'),hasSo=(t.labels||[]).includes('solved');
-  const chkH=(t.checklist||[]).map((c,i)=>`<div class="chki"><div class="chkb${c.d?' done':''}" onclick="toggleChk(${t.id},${i})">${c.d?'✓':''}</div><span style="${c.d?'text-decoration:line-through;color:var(--wht3)':''}">${c.t}</span><button class="chk-del" onclick="delChk(${t.id},${i})">✕</button></div>`).join('');
+  const chkH=(t.checklist||[]).map((c,i)=>`<div class="chki"><div class="chkb${c.d?' done':''}" onclick="toggleChk(${t.id},${i})">${c.d?'âœ“':''}</div><span style="${c.d?'text-decoration:line-through;color:var(--wht3)':''}">${c.t}</span><button class="chk-del" onclick="delChk(${t.id},${i})">âœ•</button></div>`).join('');
   const commH=(t.comments||[]).map(c=>{const cu=USERS[c.u]||USERS.GA;return`<div class="comm-bubble"><div class="comm-meta"><div class="comm-av" style="background:${cu.c};color:${cu.t}">${cu.i}</div><strong style="color:var(--wht);font-size:11px">${cu.name}</strong><span style="margin-left:auto">${c.dt}</span></div><div class="comm-txt">${c.txt}</div></div>`;}).join('');
-  const custH=(t.customLabels||[]).map(l=>`<span class="cust-tag" onclick="removeCustLbl(${t.id},'${l}')">${l} ✕</span>`).join('');
-  const respHTML=Object.entries(USERS).filter(([k])=>k!=='CS').map(([uid,usr])=>`<div class="resp-opt ${t.user===uid?'sel':''}" onclick="chgResp(${t.id},'${uid}')"><div class="av-md" style="background:${usr.c};color:${usr.t}">${usr.i}</div><div style="flex:1"><div class="resp-name">${usr.name}</div><div class="resp-role">${usr.role}</div></div><span class="resp-chk">✓</span></div>`).join('');
+  const custH=(t.customLabels||[]).map(l=>`<span class="cust-tag" onclick="removeCustLbl(${t.id},'${l}')">${l} âœ•</span>`).join('');
+  const respHTML=Object.entries(USERS).filter(([k])=>k!=='CS').map(([uid,usr])=>`<div class="resp-opt ${t.user===uid?'sel':''}" onclick="chgResp(${t.id},'${uid}')"><div class="av-md" style="background:${usr.c};color:${usr.t}">${usr.i}</div><div style="flex:1"><div class="resp-name">${usr.name}</div><div class="resp-role">${usr.role}</div></div><span class="resp-chk">âœ“</span></div>`).join('');
   const showProbFields=hasPr||hasSz;
   document.getElementById('mod').innerHTML=`
     <div class="mod-header">
-      <div class="mod-label">TÍTULO DA TAREFA</div>
+      <div class="mod-label">TÃTULO DA TAREFA</div>
       <div class="mod-header-top">
-        <input class="mod-title-input" id="mod-title-${t.id}" value="${t.title}" onchange="chgTitle(${t.id},this.value)" onkeydown="if(event.key==='Enter')this.blur()" placeholder="Título da tarefa...">
+        <input class="mod-title-input" id="mod-title-${t.id}" value="${t.title}" onchange="chgTitle(${t.id},this.value)" onkeydown="if(event.key==='Enter')this.blur()" placeholder="TÃ­tulo da tarefa...">
         <div class="mod-actions">
-          <button class="mod-action-btn">⤢</button>
-          <button class="mod-action-btn">⋯</button>
-          <button class="mod-action-btn" onclick="closeM()">✕</button>
+          <button class="mod-action-btn">â¤¢</button>
+          <button class="mod-action-btn">â‹¯</button>
+          <button class="mod-action-btn" onclick="closeM()">âœ•</button>
         </div>
       </div>
     </div>
@@ -459,16 +459,16 @@ function openCard(id){
       <div class="mod-left">
         ${imgH}
         <div class="upzone" id="upzone-${t.id}" onclick="triggerFileInput(${t.id})" ondragover="event.preventDefault();this.style.borderColor='var(--gold)'" ondragleave="this.style.borderColor=''" ondrop="handleDrop(event,${t.id})">
-          🖼 Clique, arraste ou <strong style="color:var(--gold)">Ctrl+V</strong> para colar print
-          <br><small style="font-size:10px;color:var(--wht3)">PNG, JPG até 5MB</small>
+          ðŸ–¼ Clique, arraste ou <strong style="color:var(--gold)">Ctrl+V</strong> para colar print
+          <br><small style="font-size:10px;color:var(--wht3)">PNG, JPG atÃ© 5MB</small>
           <input type="file" id="fileInput-${t.id}" accept="image/*" style="display:none" onchange="handleFileInput(event,${t.id})">
         </div>
         <div id="img-preview-${t.id}" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px"></div>
         <div class="ms">DETALHES</div>
         <div class="mr"><span class="mrl">Status</span><select class="msel" onchange="chgStatus(${t.id},this.value)">${colOpts}</select></div>
-        <div class="mr"><span class="mrl">Urgência</span><select class="msel" onchange="chgUrg(${t.id},this.value)">${urgOpts}</select></div>
+        <div class="mr"><span class="mrl">UrgÃªncia</span><select class="msel" onchange="chgUrg(${t.id},this.value)">${urgOpts}</select></div>
         <div class="mr"><span class="mrl">Prazo</span><input type="date" class="msel" value="${t.due||''}" onchange="chgDue(${t.id},this.value)" style="width:auto"></div>
-        <div class="ms">RESPONSÁVEL PELA TAREFA</div>
+        <div class="ms">RESPONSÃVEL PELA TAREFA</div>
         <div id="resp-sel-${t.id}">${respHTML}</div>
         <div class="ms">ETIQUETAS</div>
         <div class="lbl-sel">
@@ -476,7 +476,7 @@ function openCard(id){
           <button class="ltog${hasSz?' on-size':''}" onclick="togLbl(${t.id},'size')">FALTA TAMANHO</button>
           <button class="ltog${hasSo?' on-solved':''}" onclick="togLbl(${t.id},'solved')">RESOLVIDO</button>
         </div>
-        ${showProbFields?`<div class="ms">DETALHES DO PROBLEMA</div><input class="minput" value="${t.probTitle||''}" placeholder="Título do problema..." oninput="savePT(${t.id},this.value)"><textarea class="mtarea" placeholder="Descrição do problema..." oninput="savePD(${t.id},this.value)">${t.probDesc||''}</textarea>`:''}
+        ${showProbFields?`<div class="ms">DETALHES DO PROBLEMA</div><input class="minput" value="${t.probTitle||''}" placeholder="TÃ­tulo do problema..." oninput="savePT(${t.id},this.value)"><textarea class="mtarea" placeholder="DescriÃ§Ã£o do problema..." oninput="savePD(${t.id},this.value)">${t.probDesc||''}</textarea>`:''}
         <div class="ms">CHECKLIST (${cd}/${cl})</div>
         ${chkH}
         <div class="add-row">
@@ -486,17 +486,17 @@ function openCard(id){
         <div class="ms">ETIQUETAS PERSONALIZADAS</div>
         <div style="display:flex;flex-wrap:wrap;gap:3px;margin-bottom:6px">${custH||'<span style="font-size:11px;color:var(--wht3)">Nenhuma</span>'}</div>
         <div class="add-row">
-          <select class="msel" id="cust-sel" style="flex:1"><option value="">Selecionar...</option>${['Urgente','Shopee','Full','Estratégia','Devoluções','Produtos Novos'].map(o=>`<option value="${o}">${o}</option>`).join('')}</select>
+          <select class="msel" id="cust-sel" style="flex:1"><option value="">Selecionar...</option>${['Urgente','Shopee','Full','EstratÃ©gia','DevoluÃ§Ãµes','Produtos Novos'].map(o=>`<option value="${o}">${o}</option>`).join('')}</select>
           <button class="mbtn pri" onclick="addCustLblSel(${t.id})" style="padding:6px 14px;font-size:12px">+ Adicionar</button>
         </div>
-        <div class="ms">NOVO COMENTÁRIO</div>
-        <textarea class="comm-textarea" id="comm-new" placeholder="Escrever comentário..." oninput="this.nextElementSibling.textContent=this.value.length+'/2000'"></textarea>
+        <div class="ms">NOVO COMENTÃRIO</div>
+        <textarea class="comm-textarea" id="comm-new" placeholder="Escrever comentÃ¡rio..." oninput="this.nextElementSibling.textContent=this.value.length+'/2000'"></textarea>
         <div class="comm-len">0/2000</div>
         <div class="comm-toolbar">
-          <button class="comm-tool">📎</button>
+          <button class="comm-tool">ðŸ“Ž</button>
           <button class="comm-tool">@</button>
-          <button class="comm-tool">😊</button>
-          <button class="comm-tool">📋</button>
+          <button class="comm-tool">ðŸ˜Š</button>
+          <button class="comm-tool">ðŸ“‹</button>
           <button class="mbtn pri" onclick="addComm(${t.id})" style="padding:6px 14px;font-size:12px;margin-left:auto">Enviar</button>
         </div>
         <div class="ms">TIMELINE</div>
@@ -504,29 +504,29 @@ function openCard(id){
           <div class="tline-item"><div class="tline-dot"></div><div><div style="font-weight:500;color:var(--wht);font-size:11px">Tarefa criada</div><div style="font-size:10px;color:var(--wht3);margin-top:1px">${t.createdAt||'Recentemente'} por ${USERS[t.creator||t.user]?.name||'Gabriel'}</div></div></div>
           ${t.status==='doing'?'<div class="tline-item"><div class="tline-dot"></div><span>Movida para Em Andamento</span></div>':''}
           ${hasPr?'<div class="tline-item"><div class="tline-dot" style="background:var(--red)"></div><span style="color:var(--red)">Problema registrado</span></div>':''}
-          ${t.status==='done'?'<div class="tline-item"><div class="tline-dot" style="background:var(--grn)"></div><span style="color:var(--grn)">Concluída</span></div>':''}
+          ${t.status==='done'?'<div class="tline-item"><div class="tline-dot" style="background:var(--grn)"></div><span style="color:var(--grn)">ConcluÃ­da</span></div>':''}
         </div>
       </div>
       <div class="mod-right">
         <div style="font-size:10px;color:var(--gold);font-weight:700;letter-spacing:1px;font-family:'Rajdhani',sans-serif;display:flex;align-items:center;gap:6px;margin-bottom:12px">
-          <span style="display:inline-block;width:3px;height:10px;background:var(--gold);border-radius:2px"></span>COMENTÁRIOS E ATIVIDADE
+          <span style="display:inline-block;width:3px;height:10px;background:var(--gold);border-radius:2px"></span>COMENTÃRIOS E ATIVIDADE
           <button style="margin-left:auto;font-size:10px;padding:3px 8px;border-radius:5px;border:1px solid var(--bdr);background:none;color:var(--wht3);cursor:pointer">Mostrar detalhes</button>
         </div>
-        <textarea class="comm-textarea" id="comm-right-${t.id}" placeholder="Escrever um comentário detalhado..." oninput="this.nextElementSibling.textContent=this.value.length+'/2000'"></textarea>
+        <textarea class="comm-textarea" id="comm-right-${t.id}" placeholder="Escrever um comentÃ¡rio detalhado..." oninput="this.nextElementSibling.textContent=this.value.length+'/2000'"></textarea>
         <div class="comm-len">0/2000</div>
         <div class="comm-toolbar">
-          <button class="comm-tool">📎</button>
+          <button class="comm-tool">ðŸ“Ž</button>
           <button class="comm-tool">@</button>
-          <button class="comm-tool">😊</button>
-          <button class="comm-tool">📋</button>
+          <button class="comm-tool">ðŸ˜Š</button>
+          <button class="comm-tool">ðŸ“‹</button>
           <button class="mbtn pri" onclick="addCommRight(${t.id})" style="padding:5px 12px;font-size:11px;margin-left:auto">Comentar</button>
         </div>
         ${commH?`<div style="margin-top:12px">${commH}</div>`:''}
       </div>
     </div>
     <div class="mod-footer">
-      <button class="mbtn gh" onclick="closeM()">× Fechar</button>
-      ${t.status!=='done'?`<button class="mbtn pri" onclick="quickDone(${t.id})">✓ Concluir tarefa</button>`:''}
+      <button class="mbtn gh" onclick="closeM()">Ã— Fechar</button>
+      ${t.status!=='done'?`<button class="mbtn pri" onclick="quickDone(${t.id})">âœ“ Concluir tarefa</button>`:''}
     </div>`;
   document.getElementById('mbg').classList.add('open');
 }
@@ -600,33 +600,33 @@ function onColHdrDrop(e,tgtColId){
 function chgResp(tid,uid){const t=tasks.find(x=>x.id===tid);if(!t)return;t.user=uid;const sel=document.getElementById(`resp-sel-${tid}`);if(sel){sel.querySelectorAll('.resp-opt').forEach(el=>el.classList.remove('sel'));const clk=sel.querySelector(`[onclick*="'${uid}'"]`);if(clk)clk.classList.add('sel');}addLog('responsavel','atribuiu para '+(USERS[uid]?.name||uid),t.title);renderBoard();}
 function togLbl(tid,lbl){const t=tasks.find(x=>x.id===tid);if(!t)return;if((t.labels||[]).includes(lbl)){t.labels=t.labels.filter(l=>l!==lbl);}else{t.labels=(t.labels||[]);if(lbl==='prob'){t.labels=t.labels.filter(l=>l!=='solved');addLog('problema','marcou problema em',t.title);}if(lbl==='solved')t.labels=t.labels.filter(l=>l!=='prob'&&l!=='size');t.labels.push(lbl);}openCard(tid);renderBoard();}
 function quickDone(tid){const t=tasks.find(x=>x.id===tid);if(!t)return;t.status='done';addLog('concluir','concluiu',t.title);closeM();renderBoard();}
-function openNew(){const id=idC++;tasks.unshift({id,title:'Nova tarefa',status:'todo',urgency:'medium',user:curUser,cat:'Anúncios',due:today,labels:[],probTitle:'',probDesc:'',checklist:[],comments:[],imgs:[],customLabels:[],creator:curUser,createdAt:fmt()});addLog('nova_tarefa','criou uma nova tarefa','Nova tarefa');renderBoard();openCard(id);}
-function addCard(cid){const id=idC++;const colName=cols.find(c=>c.id===cid)?.title||cid;tasks.unshift({id,title:'Nova tarefa',status:cid,urgency:'medium',user:curUser,cat:'Anúncios',due:'',labels:[],probTitle:'',probDesc:'',checklist:[],comments:[],imgs:[],customLabels:[],creator:curUser,createdAt:fmt()});addLog('nova_tarefa',`adicionou tarefa em ${colName}`,'Nova tarefa');renderBoard();openCard(id);}
+function openNew(){const id=idC++;tasks.unshift({id,title:'Nova tarefa',status:'todo',urgency:'medium',user:curUser,cat:'AnÃºncios',due:today,labels:[],probTitle:'',probDesc:'',checklist:[],comments:[],imgs:[],customLabels:[],creator:curUser,createdAt:fmt()});addLog('nova_tarefa','criou uma nova tarefa','Nova tarefa');renderBoard();openCard(id);}
+function addCard(cid){const id=idC++;const colName=cols.find(c=>c.id===cid)?.title||cid;tasks.unshift({id,title:'Nova tarefa',status:cid,urgency:'medium',user:curUser,cat:'AnÃºncios',due:'',labels:[],probTitle:'',probDesc:'',checklist:[],comments:[],imgs:[],customLabels:[],creator:curUser,createdAt:fmt()});addLog('nova_tarefa',`adicionou tarefa em ${colName}`,'Nova tarefa');renderBoard();openCard(id);}
 function startEdit(cid){if(editC)finEdit(editC);editC=cid;const col=cols.find(c=>c.id===cid);const span=document.getElementById('ct-'+cid);if(!span||!col)return;const inp=document.createElement('input');inp.className='ctinput';inp.value=col.title;inp.onblur=()=>finEdit(cid);inp.onkeydown=e=>{if(e.key==='Enter')finEdit(cid);if(e.key==='Escape'){editC=null;renderBoard();}};span.replaceWith(inp);inp.focus();inp.select();}
 function finEdit(cid){editC=null;const inp=document.querySelector('.ctinput');if(!inp)return;const col=cols.find(c=>c.id===cid);if(col&&inp.value.trim())col.title=inp.value.trim();renderBoard();}
 function openCP(cid,e){e.stopPropagation();const p=document.getElementById('cp');p.innerHTML=CCOLS.map(c=>`<div class="cdotc" style="background:${c}" onclick="setCC('${cid}','${c}')"></div>`).join('');p.style.top=e.clientY+6+'px';p.style.left=e.clientX+'px';p.classList.add('open');setTimeout(()=>document.addEventListener('click',()=>p.classList.remove('open'),{once:true}),50);}
 function setCC(cid,color){const col=cols.find(c=>c.id===cid);if(col)col.color=color;document.getElementById('cp').classList.remove('open');renderBoard();}
-function delCol(cid){const col=cols.find(c=>c.id===cid);if(!col)return;if(tasks.some(t=>t.status===cid)&&!confirm(`Excluir "${col.title}"? Tarefas irão para A Fazer.`))return;tasks.forEach(t=>{if(t.status===cid)t.status='todo';});cols=cols.filter(c=>c.id!==cid);renderBoard();}
+function delCol(cid){const col=cols.find(c=>c.id===cid);if(!col)return;if(tasks.some(t=>t.status===cid)&&!confirm(`Excluir "${col.title}"? Tarefas irÃ£o para A Fazer.`))return;tasks.forEach(t=>{if(t.status===cid)t.status='todo';});cols=cols.filter(c=>c.id!==cid);renderBoard();}
 function addCol(){const id='col_'+Date.now();cols.push({id,title:'NOVA COLUNA',color:'#9090A8'});renderBoard();setTimeout(()=>startEdit(id),80);}
 function toggleUserMenu(){
   const m=document.getElementById('umenu');const open=m.style.display!=='none';
   m.style.display=open?'none':'block';
-  if(!open){m.innerHTML='<div style="font-size:10px;color:var(--wht3);padding:4px 8px 8px;letter-spacing:.8px;font-weight:600">TROCAR USUÁRIO</div>'+Object.entries(USERS).filter(([k])=>k!=='CS').map(([uid,usr])=>`<div onclick="switchUser('${uid}')" style="display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:7px;cursor:pointer;background:${curUser===uid?'var(--golda)':'transparent'};border:1px solid ${curUser===uid?'var(--gold)':'transparent'};margin-bottom:4px"><div style="width:28px;height:28px;border-radius:6px;background:${usr.c};color:${usr.t};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;font-family:Rajdhani,sans-serif">${usr.i}</div><div><div style="font-size:12px;color:var(--wht);font-weight:500">${usr.name}</div><div style="font-size:10px;color:var(--wht3)">${usr.role}</div></div>${curUser===uid?'<span style="margin-left:auto;color:var(--gold)">✓</span>':''}</div>`).join('');}
+  if(!open){m.innerHTML='<div style="font-size:10px;color:var(--wht3);padding:4px 8px 8px;letter-spacing:.8px;font-weight:600">TROCAR USUÃRIO</div>'+Object.entries(USERS).filter(([k])=>k!=='CS').map(([uid,usr])=>`<div onclick="switchUser('${uid}')" style="display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:7px;cursor:pointer;background:${curUser===uid?'var(--golda)':'transparent'};border:1px solid ${curUser===uid?'var(--gold)':'transparent'};margin-bottom:4px"><div style="width:28px;height:28px;border-radius:6px;background:${usr.c};color:${usr.t};display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;font-family:Rajdhani,sans-serif">${usr.i}</div><div><div style="font-size:12px;color:var(--wht);font-weight:500">${usr.name}</div><div style="font-size:10px;color:var(--wht3)">${usr.role}</div></div>${curUser===uid?'<span style="margin-left:auto;color:var(--gold)">âœ“</span>':''}</div>`).join('');}
 }
-function switchUser(uid){curUser=uid;const u=USERS[uid];document.getElementById('hdr-av').textContent=u.i;document.getElementById('hdr-av').style.background=u.c;document.getElementById('hdr-av').style.color=u.t;document.getElementById('hdr-name').textContent=`${u.name} · ${u.role}`;document.getElementById('umenu').style.display='none';renderBoard();}
-function doLogout(){if(confirm('Sair do sistema?'))alert('Sessão encerrada.');}
+function switchUser(uid){curUser=uid;const u=USERS[uid];document.getElementById('hdr-av').textContent=u.i;document.getElementById('hdr-av').style.background=u.c;document.getElementById('hdr-av').style.color=u.t;document.getElementById('hdr-name').textContent=`${u.name} Â· ${u.role}`;document.getElementById('umenu').style.display='none';renderBoard();}
+function doLogout(){if(confirm('Sair do sistema?'))alert('SessÃ£o encerrada.');}
 document.addEventListener('click',function(e){const m=document.getElementById('umenu');const dd=document.getElementById('user-dd');if(m.style.display!=='none'&&!m.contains(e.target)&&!dd.contains(e.target))m.style.display='none';});
-function renderDash(){const done=tasks.filter(t=>t.status==='done').length;const ov=tasks.filter(isOv).length;const prob=tasks.filter(t=>(t.labels||[]).some(l=>l==='prob'||l==='size')).length;const tdT=tasks.filter(isDT).length;const pct=tasks.length>0?Math.round(done/tasks.length*100):0;const uStats=Object.entries(USERS).filter(([k])=>k!=='CS').map(([uid,usr])=>{const mine=tasks.filter(t=>t.user===uid);const d=mine.filter(t=>t.status==='done').length;const p=mine.length>0?Math.round(d/mine.length*100):0;return{uid,usr,total:mine.length,done:d,late:mine.filter(isOv).length,p};}).sort((a,b)=>b.p-a.p);const mPct=Math.min(Math.round(metaVal/META*100),100);const hit=metaVal>=META,close=metaVal>=META*0.8&&!hit;const barColor=hit?'var(--grn)':close?'var(--org)':'var(--gold)';document.getElementById('dv').innerHTML=`<div style="font-size:15px;font-weight:700;font-family:'Rajdhani',sans-serif;letter-spacing:1px;color:var(--wht);margin-bottom:14px">DASHBOARD — VISÃO GERAL</div><div class="dm-grid"><div class="dm"><div class="dm-val" style="color:var(--gold)">${tasks.length}</div><div class="dm-lbl">Total de Tarefas</div></div><div class="dm"><div class="dm-val" style="color:var(--grn)">${done}</div><div class="dm-lbl">Concluídas</div></div><div class="dm"><div class="dm-val" style="color:var(--red)">${prob}</div><div class="dm-lbl">Com Problema</div></div><div class="dm"><div class="dm-val" style="color:var(--org)">${ov}</div><div class="dm-lbl">Vencidas</div></div></div><div class="meta-box" style="margin-top:12px"><div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px"><div><div style="font-size:14px;font-weight:600;color:var(--wht);font-family:'Rajdhani',sans-serif;letter-spacing:.5px">🎯 META DE VENDAS SEMANAL</div><div style="font-size:11px;color:var(--wht3);margin-top:2px">Objetivo: ${fmtM(META)}/semana</div></div><span style="font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;background:${hit?'var(--grna)':close?'var(--orga)':'var(--reda)'};color:${hit?'var(--grn)':close?'var(--org)':'var(--red)'}">${hit?'META BATIDA ✅':close?'QUASE LÁ ⚡':'EM ANDAMENTO 📊'}</span></div><div style="display:flex;align-items:baseline;gap:6px;margin-bottom:12px"><span style="font-size:32px;font-weight:700;color:var(--gold);font-family:'Rajdhani',sans-serif">${fmtM(metaVal)}</span><span style="font-size:14px;color:var(--wht3)">de</span><span style="font-size:16px;color:var(--wht3)">${fmtM(META)}</span></div><div class="meta-bar-wrap"><div class="meta-bar" style="width:${mPct}%;background:${barColor};min-width:${mPct>0?4:0}px">${mPct>15?`<span style="font-size:10px;font-weight:700;color:#000">${mPct}%</span>`:''}</div></div><div style="display:flex;justify-content:space-between;font-size:10px;color:var(--wht3);margin-bottom:10px"><span>R$ 0</span><span>${fmtM(META*0.5)}</span><span>${fmtM(META)}</span></div><div style="font-size:12px;color:var(--wht2);padding:10px 12px;background:var(--bg3);border-radius:8px;border-left:3px solid var(--gold);line-height:1.6">${hit?'🎉 Meta batida! Semana que vem: <strong>reparos, melhorias e novas ideias</strong>.':'📢 Meta ainda não batida. Foco total em <strong>vendas e conversão</strong>!'}</div><div style="display:flex;gap:8px;margin-top:10px"><input id="meta-inp" type="number" placeholder="Valor vendido R$..." value="${metaVal||''}" style="flex:1;background:var(--bg3);border:1px solid var(--bdr);border-radius:6px;color:var(--wht);padding:7px 10px;font-size:13px;outline:none;font-family:'Inter',sans-serif"><button onclick="updMeta()" style="background:var(--gold);color:#000;border:none;border-radius:6px;padding:7px 16px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Rajdhani',sans-serif;letter-spacing:.5px">Atualizar</button></div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px"><div><div style="font-size:13px;font-weight:700;font-family:'Rajdhani',sans-serif;letter-spacing:.5px;color:var(--wht);border-bottom:1px solid var(--bdr);padding-bottom:7px;margin-bottom:10px">RANKING DE PERFORMANCE</div>${uStats.map((s,i)=>`<div class="rank-row"><div style="font-size:16px;width:24px">${['🥇','🥈','🥉','4º'][i]}</div><div class="av" style="background:${s.usr.c};color:${s.usr.t};width:24px;height:24px;font-size:10px;border-radius:6px">${s.usr.i}</div><div style="flex:1"><div style="font-size:12px;font-weight:600">${s.usr.name}</div><div style="font-size:10px;color:var(--wht3)">${s.done}/${s.total} · ${s.late} atr.</div></div><div class="rbar-w"><div class="rbar" style="width:${s.p}%"></div></div><div style="font-size:12px;color:var(--gold);font-weight:700;width:34px;text-align:right;font-family:'Rajdhani',sans-serif">${s.p}%</div></div>`).join('')}</div><div><div style="font-size:13px;font-weight:700;font-family:'Rajdhani',sans-serif;letter-spacing:.5px;color:var(--wht);border-bottom:1px solid var(--bdr);padding-bottom:7px;margin-bottom:10px">PERFORMANCE GERAL</div><div style="background:var(--bg2);border:1px solid var(--bdrg);border-radius:10px;padding:20px;text-align:center"><div style="font-size:44px;font-weight:700;color:var(--gold);font-family:'Rajdhani',sans-serif">${pct}%</div><div style="font-size:11px;color:var(--wht3);margin:6px 0 12px">Tarefas concluídas</div><div style="height:8px;background:var(--bg4);border-radius:4px;overflow:hidden"><div style="height:8px;background:var(--gold);width:${pct}%;border-radius:4px"></div></div></div></div></div>`;}
+function renderDash(){const done=tasks.filter(t=>t.status==='done').length;const ov=tasks.filter(isOv).length;const prob=tasks.filter(t=>(t.labels||[]).some(l=>l==='prob'||l==='size')).length;const tdT=tasks.filter(isDT).length;const pct=tasks.length>0?Math.round(done/tasks.length*100):0;const uStats=Object.entries(USERS).filter(([k])=>k!=='CS').map(([uid,usr])=>{const mine=tasks.filter(t=>t.user===uid);const d=mine.filter(t=>t.status==='done').length;const p=mine.length>0?Math.round(d/mine.length*100):0;return{uid,usr,total:mine.length,done:d,late:mine.filter(isOv).length,p};}).sort((a,b)=>b.p-a.p);const mPct=Math.min(Math.round(metaVal/META*100),100);const hit=metaVal>=META,close=metaVal>=META*0.8&&!hit;const barColor=hit?'var(--grn)':close?'var(--org)':'var(--gold)';document.getElementById('dv').innerHTML=`<div style="font-size:15px;font-weight:700;font-family:'Rajdhani',sans-serif;letter-spacing:1px;color:var(--wht);margin-bottom:14px">DASHBOARD â€” VISÃƒO GERAL</div><div class="dm-grid"><div class="dm"><div class="dm-val" style="color:var(--gold)">${tasks.length}</div><div class="dm-lbl">Total de Tarefas</div></div><div class="dm"><div class="dm-val" style="color:var(--grn)">${done}</div><div class="dm-lbl">ConcluÃ­das</div></div><div class="dm"><div class="dm-val" style="color:var(--red)">${prob}</div><div class="dm-lbl">Com Problema</div></div><div class="dm"><div class="dm-val" style="color:var(--org)">${ov}</div><div class="dm-lbl">Vencidas</div></div></div><div class="meta-box" style="margin-top:12px"><div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px"><div><div style="font-size:14px;font-weight:600;color:var(--wht);font-family:'Rajdhani',sans-serif;letter-spacing:.5px">ðŸŽ¯ META DE VENDAS SEMANAL</div><div style="font-size:11px;color:var(--wht3);margin-top:2px">Objetivo: ${fmtM(META)}/semana</div></div><span style="font-size:11px;font-weight:600;padding:4px 12px;border-radius:20px;background:${hit?'var(--grna)':close?'var(--orga)':'var(--reda)'};color:${hit?'var(--grn)':close?'var(--org)':'var(--red)'}">${hit?'META BATIDA âœ…':close?'QUASE LÃ âš¡':'EM ANDAMENTO ðŸ“Š'}</span></div><div style="display:flex;align-items:baseline;gap:6px;margin-bottom:12px"><span style="font-size:32px;font-weight:700;color:var(--gold);font-family:'Rajdhani',sans-serif">${fmtM(metaVal)}</span><span style="font-size:14px;color:var(--wht3)">de</span><span style="font-size:16px;color:var(--wht3)">${fmtM(META)}</span></div><div class="meta-bar-wrap"><div class="meta-bar" style="width:${mPct}%;background:${barColor};min-width:${mPct>0?4:0}px">${mPct>15?`<span style="font-size:10px;font-weight:700;color:#000">${mPct}%</span>`:''}</div></div><div style="display:flex;justify-content:space-between;font-size:10px;color:var(--wht3);margin-bottom:10px"><span>R$ 0</span><span>${fmtM(META*0.5)}</span><span>${fmtM(META)}</span></div><div style="font-size:12px;color:var(--wht2);padding:10px 12px;background:var(--bg3);border-radius:8px;border-left:3px solid var(--gold);line-height:1.6">${hit?'ðŸŽ‰ Meta batida! Semana que vem: <strong>reparos, melhorias e novas ideias</strong>.':'ðŸ“¢ Meta ainda nÃ£o batida. Foco total em <strong>vendas e conversÃ£o</strong>!'}</div><div style="display:flex;gap:8px;margin-top:10px"><input id="meta-inp" type="number" placeholder="Valor vendido R$..." value="${metaVal||''}" style="flex:1;background:var(--bg3);border:1px solid var(--bdr);border-radius:6px;color:var(--wht);padding:7px 10px;font-size:13px;outline:none;font-family:'Inter',sans-serif"><button onclick="updMeta()" style="background:var(--gold);color:#000;border:none;border-radius:6px;padding:7px 16px;font-size:12px;font-weight:700;cursor:pointer;font-family:'Rajdhani',sans-serif;letter-spacing:.5px">Atualizar</button></div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px"><div><div style="font-size:13px;font-weight:700;font-family:'Rajdhani',sans-serif;letter-spacing:.5px;color:var(--wht);border-bottom:1px solid var(--bdr);padding-bottom:7px;margin-bottom:10px">RANKING DE PERFORMANCE</div>${uStats.map((s,i)=>`<div class="rank-row"><div style="font-size:16px;width:24px">${['ðŸ¥‡','ðŸ¥ˆ','ðŸ¥‰','4Âº'][i]}</div><div class="av" style="background:${s.usr.c};color:${s.usr.t};width:24px;height:24px;font-size:10px;border-radius:6px">${s.usr.i}</div><div style="flex:1"><div style="font-size:12px;font-weight:600">${s.usr.name}</div><div style="font-size:10px;color:var(--wht3)">${s.done}/${s.total} Â· ${s.late} atr.</div></div><div class="rbar-w"><div class="rbar" style="width:${s.p}%"></div></div><div style="font-size:12px;color:var(--gold);font-weight:700;width:34px;text-align:right;font-family:'Rajdhani',sans-serif">${s.p}%</div></div>`).join('')}</div><div><div style="font-size:13px;font-weight:700;font-family:'Rajdhani',sans-serif;letter-spacing:.5px;color:var(--wht);border-bottom:1px solid var(--bdr);padding-bottom:7px;margin-bottom:10px">PERFORMANCE GERAL</div><div style="background:var(--bg2);border:1px solid var(--bdrg);border-radius:10px;padding:20px;text-align:center"><div style="font-size:44px;font-weight:700;color:var(--gold);font-family:'Rajdhani',sans-serif">${pct}%</div><div style="font-size:11px;color:var(--wht3);margin:6px 0 12px">Tarefas concluÃ­das</div><div style="height:8px;background:var(--bg4);border-radius:4px;overflow:hidden"><div style="height:8px;background:var(--gold);width:${pct}%;border-radius:4px"></div></div></div></div></div>`;}
 function updMeta(){const v=parseFloat(document.getElementById('meta-inp')?.value||0);metaVal=isNaN(v)?0:v;renderDash();}
-function renderProbs(){const probs=tasks.filter(t=>(t.labels||[]).some(l=>l==='prob'||l==='size')).sort((a,b)=>({urgent:0,high:1,medium:2,low:3}[a.urgency]||2)-({urgent:0,high:1,medium:2,low:3}[b.urgency]||2));const getCol=id=>(cols.find(c=>c.id===id)||{title:id}).title;document.getElementById('plist').innerHTML=probs.length===0?'<div style="text-align:center;color:var(--wht3);padding:50px">Nenhum problema ativo!</div>':probs.map(t=>{const sz=(t.labels||[]).includes('size')&&!(t.labels||[]).includes('prob');const u=USERS[t.user]||USERS.GA;return`<div class="prob-card" style="${sz?'border-left-color:var(--org);border-color:rgba(224,122,48,0.25)':''}" onclick="setView('board',document.querySelector('.mn'));openCard(${t.id})"><div style="display:flex;align-items:center;gap:10px;margin-bottom:${t.probDesc?'8':'0'}px"><div style="font-size:18px">${sz?'⚡':'⚠'}</div><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;color:var(--wht);margin-bottom:2px">${t.title}</div>${t.probTitle?`<div style="font-size:12px;color:${sz?'var(--org)':'var(--red)'};font-weight:500">${t.probTitle}</div>`:''}</div><span style="font-size:10px;padding:3px 9px;border-radius:4px;font-weight:700;background:${sz?'var(--orga)':'var(--reda)'};color:${sz?'var(--org)':'var(--red)'}">${sz?'FALTA TAMANHO':'TENHO UM PROBLEMA'}</span></div>${t.probDesc?`<div style="font-size:12px;color:var(--wht2);margin-bottom:5px;padding:6px 8px;background:var(--bg3);border-radius:5px;line-height:1.5">${t.probDesc}</div>`:''}<div style="display:flex;align-items:center;gap:8px"><div class="av" style="background:${u.c};color:${u.t};width:18px;height:18px;font-size:8px;border-radius:4px">${u.i}</div><span style="font-size:11px;color:var(--wht3)">${u.name} · ${t.cat} · ${getCol(t.status)} · Prazo: ${t.due||'—'}</span></div></div>`;}).join('');}
+function renderProbs(){const probs=tasks.filter(t=>(t.labels||[]).some(l=>l==='prob'||l==='size')).sort((a,b)=>({urgent:0,high:1,medium:2,low:3}[a.urgency]||2)-({urgent:0,high:1,medium:2,low:3}[b.urgency]||2));const getCol=id=>(cols.find(c=>c.id===id)||{title:id}).title;document.getElementById('plist').innerHTML=probs.length===0?'<div style="text-align:center;color:var(--wht3);padding:50px">Nenhum problema ativo!</div>':probs.map(t=>{const sz=(t.labels||[]).includes('size')&&!(t.labels||[]).includes('prob');const u=USERS[t.user]||USERS.GA;return`<div class="prob-card" style="${sz?'border-left-color:var(--org);border-color:rgba(224,122,48,0.25)':''}" onclick="setView('board',document.querySelector('.mn'));openCard(${t.id})"><div style="display:flex;align-items:center;gap:10px;margin-bottom:${t.probDesc?'8':'0'}px"><div style="font-size:18px">${sz?'âš¡':'âš '}</div><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;color:var(--wht);margin-bottom:2px">${t.title}</div>${t.probTitle?`<div style="font-size:12px;color:${sz?'var(--org)':'var(--red)'};font-weight:500">${t.probTitle}</div>`:''}</div><span style="font-size:10px;padding:3px 9px;border-radius:4px;font-weight:700;background:${sz?'var(--orga)':'var(--reda)'};color:${sz?'var(--org)':'var(--red)'}">${sz?'FALTA TAMANHO':'TENHO UM PROBLEMA'}</span></div>${t.probDesc?`<div style="font-size:12px;color:var(--wht2);margin-bottom:5px;padding:6px 8px;background:var(--bg3);border-radius:5px;line-height:1.5">${t.probDesc}</div>`:''}<div style="display:flex;align-items:center;gap:8px"><div class="av" style="background:${u.c};color:${u.t};width:18px;height:18px;font-size:8px;border-radius:4px">${u.i}</div><span style="font-size:11px;color:var(--wht3)">${u.name} Â· ${t.cat} Â· ${getCol(t.status)} Â· Prazo: ${t.due||'â€”'}</span></div></div>`;}).join('');}
 function renderLog(){
   const llist=document.getElementById('llist');
   if(!llist)return;
   if(actLog.length===0){llist.innerHTML='<div style="text-align:center;color:var(--wht3);padding:40px;font-size:13px">Nenhuma atividade registrada ainda.</div>';return;}
   llist.innerHTML=actLog.map(l=>{
     const u=USERS[l.user]||USERS.GA;
-    const icos={criar:'📝',mover:'🔄',concluir:'✅',comentar:'💬',problema:'⚠',checklist:'☑',etiqueta:'🏷',responsavel:'👤',nova_tarefa:'➕',ponto_entrada:'🟢',ponto_saida:'🔴'};
-    const ico=icos[l.ico]||'📋';
+    const icos={criar:'ðŸ“',mover:'ðŸ”„',concluir:'âœ…',comentar:'ðŸ’¬',problema:'âš ',checklist:'â˜‘',etiqueta:'ðŸ·',responsavel:'ðŸ‘¤',nova_tarefa:'âž•',ponto_entrada:'ðŸŸ¢',ponto_saida:'ðŸ”´'};
+    const ico=icos[l.ico]||'ðŸ“‹';
     return`<div class="log-item">
       <span style="font-size:16px;flex-shrink:0">${ico}</span>
       <div class="av" style="background:${u.c};color:${u.t};width:24px;height:24px;font-size:9px;border-radius:6px;flex-shrink:0">${u.i}</div>
@@ -672,7 +672,7 @@ function refreshImgPreview(tid){
   container.innerHTML=imgs.map((src,i)=>`
     <div style="position:relative;flex-shrink:0">
       <img src="${src}" style="width:90px;height:70px;object-fit:cover;border-radius:7px;border:1px solid var(--bdr)">
-      <button onclick="removeImg(${tid},${i})" style="position:absolute;top:-5px;right:-5px;width:18px;height:18px;border-radius:50%;background:var(--red);border:none;color:#fff;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;line-height:1">✕</button>
+      <button onclick="removeImg(${tid},${i})" style="position:absolute;top:-5px;right:-5px;width:18px;height:18px;border-radius:50%;background:var(--red);border:none;color:#fff;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:700;line-height:1">âœ•</button>
     </div>`).join('');
 }
 
@@ -681,7 +681,7 @@ function removeImg(tid,idx){
   if(t&&t.imgData){t.imgData.splice(idx,1);refreshImgPreview(tid);}
 }
 
-// Global paste listener — Ctrl+V when modal is open
+// Global paste listener â€” Ctrl+V when modal is open
 document.addEventListener('paste',function(e){
   const modal=document.getElementById('mbg');
   if(!modal||!modal.classList.contains('open'))return;
@@ -757,9 +757,9 @@ function renderPonto(){
     const clkEl=document.getElementById('ponto-clock');
     if(clkEl){const d=new Date();clkEl.textContent=`${padZ(d.getHours())}:${padZ(d.getMinutes())}:${padZ(d.getSeconds())}`;}
     const sessEl=document.getElementById('ponto-sess');
-    if(sessEl){const open=getOpenRec(curUser);sessEl.textContent=open?`Sessão atual: ${fmtDur(Math.floor((Date.now()-open.start)/1000))}`:'Aguardando entrada...';}
+    if(sessEl){const open=getOpenRec(curUser);sessEl.textContent=open?`SessÃ£o atual: ${fmtDur(Math.floor((Date.now()-open.start)/1000))}`:'Aguardando entrada...';}
     // update admin live sessions
-    if(isAdmin){Object.keys(PONTO_USERS).forEach(uid=>{const el=document.getElementById(`emp-sess-${uid}`);if(el){const op=getOpenRec(uid);el.textContent=op?`🟢 ${fmtDur(Math.floor((Date.now()-op.start)/1000))}`:'⚪ Offline';}});}
+    if(isAdmin){Object.keys(PONTO_USERS).forEach(uid=>{const el=document.getElementById(`emp-sess-${uid}`);if(el){const op=getOpenRec(uid);el.textContent=op?`ðŸŸ¢ ${fmtDur(Math.floor((Date.now()-op.start)/1000))}`:'âšª Offline';}});}
   },1000);
 
   const ws=weekStartMs(),ms2=monthStartMs();
@@ -779,7 +779,7 @@ function renderPonto(){
   let adminHTML='';
   if(isAdmin){
     adminHTML=`<div class="ponto-card gold-border">
-      <div class="ponto-sec-title">VISÃO GERAL DA EQUIPE</div>
+      <div class="ponto-sec-title">VISÃƒO GERAL DA EQUIPE</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
         ${Object.entries(PONTO_USERS).map(([uid,usr])=>{
           const ws2=weekStartMs();
@@ -792,7 +792,7 @@ function renderPonto(){
               <div class="av-md" style="background:${usr.c};color:${usr.t}">${usr.i}</div>
               <div style="flex:1">
                 <div style="font-size:13px;font-weight:600;color:var(--wht)">${usr.name}</div>
-                <div id="emp-sess-${uid}" style="font-size:11px;color:${working?'var(--grn)':'var(--wht3)'}">${working?`🟢 ${fmtDur(Math.floor((Date.now()-op.start)/1000))}`:'⚪ Offline'}</div>
+                <div id="emp-sess-${uid}" style="font-size:11px;color:${working?'var(--grn)':'var(--wht3)'}">${working?`ðŸŸ¢ ${fmtDur(Math.floor((Date.now()-op.start)/1000))}`:'âšª Offline'}</div>
               </div>
             </div>
             <div class="emp-prog"><div class="emp-prog-fill" style="width:${wPct}%;background:${usr.t}"></div></div>
@@ -800,7 +800,7 @@ function renderPonto(){
           </div>`;
         }).join('')}
       </div>
-      ${selAdminEmp?adminEmpDetail(selAdminEmp):'<div style="font-size:12px;color:var(--wht3);text-align:center;padding:8px">Clique em um funcionário para ver detalhes</div>'}
+      ${selAdminEmp?adminEmpDetail(selAdminEmp):'<div style="font-size:12px;color:var(--wht3);text-align:center;padding:8px">Clique em um funcionÃ¡rio para ver detalhes</div>'}
     </div>`;
   }
 
@@ -813,22 +813,22 @@ function renderPonto(){
             <div class="av-md" style="background:${u.c};color:${u.t};width:44px;height:44px;font-size:14px;border-radius:9px">${u.i}</div>
             <div>
               <div style="font-size:16px;font-weight:600;color:var(--wht)">${u.name}</div>
-              <div style="font-size:11px;color:var(--wht3)">${u.role} · Meta: 20h/semana</div>
+              <div style="font-size:11px;color:var(--wht3)">${u.role} Â· Meta: 20h/semana</div>
             </div>
           </div>
-          <span class="ponto-status-pill ${isWorking?'working':'offline'}">${isWorking?'🟢 Trabalhando':'⚪ Disponível'}</span>
+          <span class="ponto-status-pill ${isWorking?'working':'offline'}">${isWorking?'ðŸŸ¢ Trabalhando':'âšª DisponÃ­vel'}</span>
         </div>
         <div class="ponto-sec-title">PROGRESSO DA SEMANA</div>
         <div class="ponto-prog-bar"><div class="ponto-prog-fill" style="width:${weekPct}%;background:${weekPct>=100?'var(--grn)':'var(--gold)'}"></div></div>
-        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--wht3);margin-bottom:14px"><span>${fmtDur(weekSec)} feitas</span><span>${weekPct>=100?'Meta atingida! 🎉':'faltam '+fmtDur(Math.max(0,WEEK_GOAL_SEC-weekSec))}</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--wht3);margin-bottom:14px"><span>${fmtDur(weekSec)} feitas</span><span>${weekPct>=100?'Meta atingida! ðŸŽ‰':'faltam '+fmtDur(Math.max(0,WEEK_GOAL_SEC-weekSec))}</span></div>
         <div class="ponto-sec-title">REGISTRO DE PONTO</div>
         <div class="ponto-clock" id="ponto-clock">${clockStr}</div>
-        <div class="ponto-session" id="ponto-sess">${isWorking?`Sessão atual: ${fmtDur(Math.floor((Date.now()-open.start)/1000))}`:'Aguardando entrada...'}</div>
+        <div class="ponto-session" id="ponto-sess">${isWorking?`SessÃ£o atual: ${fmtDur(Math.floor((Date.now()-open.start)/1000))}`:'Aguardando entrada...'}</div>
         <div class="ponto-btn-row">
           <button class="ponto-btn entrada" onclick="punchIn()" ${isWorking?'disabled':''}>Entrada</button>
-          <button class="ponto-btn saida" onclick="punchOut()" ${!isWorking?'disabled':''}>Saída</button>
+          <button class="ponto-btn saida" onclick="punchOut()" ${!isWorking?'disabled':''}>SaÃ­da</button>
         </div>
-        <div class="ponto-loc" id="ponto-loc"><div class="ponto-loc-dot" style="background:#888"></div><span>Obtendo localização...</span></div>
+        <div class="ponto-loc" id="ponto-loc"><div class="ponto-loc-dot" style="background:#888"></div><span>Obtendo localizaÃ§Ã£o...</span></div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
         <div class="ponto-card"><div class="ponto-stats-grid">
@@ -837,13 +837,13 @@ function renderPonto(){
         </div></div>
         <div class="ponto-card"><div class="ponto-stats-grid">
           <div class="ponto-stat"><div class="ponto-stat-val" style="color:var(--grn)">R$ ${earned.toFixed(0)}</div><div class="ponto-stat-lbl">Ganhos</div></div>
-          <div class="ponto-stat"><div class="ponto-stat-val" style="color:#7BAEE8">${monthPct}%</div><div class="ponto-stat-lbl">Mês</div></div>
+          <div class="ponto-stat"><div class="ponto-stat-val" style="color:#7BAEE8">${monthPct}%</div><div class="ponto-stat-lbl">MÃªs</div></div>
         </div></div>
       </div>
       <div class="ponto-card">
         <div class="ponto-sec-title">REGISTROS DE HOJE</div>
-        ${todayRecs.length===0?'<div style="font-size:12px;color:var(--wht3);text-align:center;padding:12px">Nenhum registro hoje</div>':todayRecs.map(r=>{const inT=new Date(r.start),outT=new Date(r.end);return`<div class="ponto-reg"><span style="font-family:monospace;color:var(--wht2)">${padZ(inT.getHours())}:${padZ(inT.getMinutes())} → ${padZ(outT.getHours())}:${padZ(outT.getMinutes())}</span><span style="font-weight:600;color:var(--wht)">${fmtDur(Math.floor((r.end-r.start)/1000))}</span></div>`;}).join('')}
-        ${isWorking?`<div class="ponto-reg open"><span style="font-family:monospace;color:var(--grn)">${padZ(new Date(open.start).getHours())}:${padZ(new Date(open.start).getMinutes())} → em andamento</span><span style="font-weight:600;color:var(--grn)">⏱</span></div>`:''}
+        ${todayRecs.length===0?'<div style="font-size:12px;color:var(--wht3);text-align:center;padding:12px">Nenhum registro hoje</div>':todayRecs.map(r=>{const inT=new Date(r.start),outT=new Date(r.end);return`<div class="ponto-reg"><span style="font-family:monospace;color:var(--wht2)">${padZ(inT.getHours())}:${padZ(inT.getMinutes())} â†’ ${padZ(outT.getHours())}:${padZ(outT.getMinutes())}</span><span style="font-weight:600;color:var(--wht)">${fmtDur(Math.floor((r.end-r.start)/1000))}</span></div>`;}).join('')}
+        ${isWorking?`<div class="ponto-reg open"><span style="font-family:monospace;color:var(--grn)">${padZ(new Date(open.start).getHours())}:${padZ(new Date(open.start).getMinutes())} â†’ em andamento</span><span style="font-weight:600;color:var(--grn)">â±</span></div>`:''}
       </div>
     </div>`;
 
@@ -851,10 +851,10 @@ function renderPonto(){
   if(navigator.geolocation){
     navigator.geolocation.getCurrentPosition(pos=>{
       const el=document.getElementById('ponto-loc');
-      if(el)el.innerHTML=`<div class="ponto-loc-dot" style="background:var(--grn)"></div><span>Lat: ${pos.coords.latitude.toFixed(4)} · Lng: ${pos.coords.longitude.toFixed(4)}</span>`;
+      if(el)el.innerHTML=`<div class="ponto-loc-dot" style="background:var(--grn)"></div><span>Lat: ${pos.coords.latitude.toFixed(4)} Â· Lng: ${pos.coords.longitude.toFixed(4)}</span>`;
     },()=>{
       const el=document.getElementById('ponto-loc');
-      if(el)el.innerHTML=`<div class="ponto-loc-dot" style="background:var(--org)"></div><span>Localização não obtida</span>`;
+      if(el)el.innerHTML=`<div class="ponto-loc-dot" style="background:var(--org)"></div><span>LocalizaÃ§Ã£o nÃ£o obtida</span>`;
     },{timeout:6000});
   }
 }
@@ -873,15 +873,15 @@ function adminEmpDetail(uid){
       <div class="av-md" style="background:${usr.c};color:${usr.t}">${usr.i}</div>
       <div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--wht)">${usr.name}</div><div style="font-size:10px;color:var(--wht3)">${usr.role}</div></div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;flex:2">
-        ${[['Semana',fmtDur(wSec)+` (${wPct}%)`,wPct>=100?'var(--grn)':'var(--gold)'],['Mês',fmtDur(mSec)+` (${mPct}%)`,mPct>=100?'var(--grn)':'#7BAEE8'],['Ganhos','R$ '+earnedEmp.toFixed(0),'var(--grn)']].map(([l,v,c])=>`<div style="background:var(--bg4);border-radius:6px;padding:6px 8px;text-align:center"><div style="font-size:11px;font-weight:600;color:${c}">${v}</div><div style="font-size:9px;color:var(--wht3)">${l}</div></div>`).join('')}
+        ${[['Semana',fmtDur(wSec)+` (${wPct}%)`,wPct>=100?'var(--grn)':'var(--gold)'],['MÃªs',fmtDur(mSec)+` (${mPct}%)`,mPct>=100?'var(--grn)':'#7BAEE8'],['Ganhos','R$ '+earnedEmp.toFixed(0),'var(--grn)']].map(([l,v,c])=>`<div style="background:var(--bg4);border-radius:6px;padding:6px 8px;text-align:center"><div style="font-size:11px;font-weight:600;color:${c}">${v}</div><div style="font-size:9px;color:var(--wht3)">${l}</div></div>`).join('')}
       </div>
     </div>
-    <div style="font-size:10px;color:var(--wht3);margin-bottom:6px;text-transform:uppercase;letter-spacing:.8px">Últimos registros</div>
-    ${recs.length===0?`<div style="font-size:12px;color:var(--wht3);padding:8px">Sem registros ainda</div>`:recs.map(r=>{const inT=new Date(r.start);const dur=r.end?Math.floor((r.end-r.start)/1000):null;return`<div class="ponto-reg ${!r.end?'open':''}"><div><div style="font-family:monospace;font-size:12px">${padZ(inT.getHours())}:${padZ(inT.getMinutes())} ${r.end?`→ ${padZ(new Date(r.end).getHours())}:${padZ(new Date(r.end).getMinutes())}`:' → em andamento'}</div><div style="font-size:10px;color:var(--wht3)">${r.date||''}</div></div><span style="font-weight:600;color:${!r.end?'var(--grn)':'var(--wht)'}">${dur?fmtDur(dur):'⏱'}</span></div>`;}).join('')}
+    <div style="font-size:10px;color:var(--wht3);margin-bottom:6px;text-transform:uppercase;letter-spacing:.8px">Ãšltimos registros</div>
+    ${recs.length===0?`<div style="font-size:12px;color:var(--wht3);padding:8px">Sem registros ainda</div>`:recs.map(r=>{const inT=new Date(r.start);const dur=r.end?Math.floor((r.end-r.start)/1000):null;return`<div class="ponto-reg ${!r.end?'open':''}"><div><div style="font-family:monospace;font-size:12px">${padZ(inT.getHours())}:${padZ(inT.getMinutes())} ${r.end?`â†’ ${padZ(new Date(r.end).getHours())}:${padZ(new Date(r.end).getMinutes())}`:' â†’ em andamento'}</div><div style="font-size:10px;color:var(--wht3)">${r.date||''}</div></div><span style="font-weight:600;color:${!r.end?'var(--grn)':'var(--wht)'}">${dur?fmtDur(dur):'â±'}</span></div>`;}).join('')}
   </div>`;
 }
 // ===================== END PONTO =====================
-// ===== SUPERTRELLO BANCO ONLINE - PRIORIDADE PARA ESTE COMPUTADOR =====
+// ===== SUPERTRELLO BANCO ONLINE - SINCRONIZACAO DA EQUIPE =====
 (function(){
   if(window.__SUPERTRELLO_FIREBASE_SYNC__)return;
   window.__SUPERTRELLO_FIREBASE_SYNC__=true;
@@ -910,7 +910,8 @@ function adminEmpDetail(uid){
 
   let remoteRef=null;
   let applyingRemote=false;
-  let firstSyncDone=false;
+  let saveTimer=null;
+  let lastSavedJson='';
 
   function loadScript(src){
     return new Promise((resolve,reject)=>{
@@ -933,8 +934,48 @@ function adminEmpDetail(uid){
     };
   }
 
+  function readLocalState(){
+    try{
+      const raw=localStorage.getItem(STORAGE_KEY);
+      return raw?JSON.parse(raw):null;
+    }catch(e){
+      console.warn('Nao foi possivel ler dados locais.',e);
+      return null;
+    }
+  }
+
+  function mergeBy(itemsA,itemsB,keyFn){
+    const map=new Map();
+    (Array.isArray(itemsA)?itemsA:[]).forEach(item=>map.set(keyFn(item),item));
+    (Array.isArray(itemsB)?itemsB:[]).forEach(item=>map.set(keyFn(item),item));
+    return [...map.values()];
+  }
+
+  function mergeStates(remoteState,localState){
+    if(!remoteState&&!localState)return null;
+    if(!remoteState)return localState;
+    if(!localState)return remoteState;
+
+    const base=(remoteState.updatedAt||0) >= (localState.updatedAt||0) ? {...localState,...remoteState} : {...remoteState,...localState};
+    const mergedTasks=mergeBy(localState.tasks,remoteState.tasks,t=>String(t.id||t.title||Math.random()));
+    const mergedCols=mergeBy(localState.cols,remoteState.cols,c=>String(c.id||c.title||Math.random()));
+    const mergedLog=mergeBy(localState.actLog,remoteState.actLog,l=>`${l.dt||''}|${l.user||''}|${l.action||''}|${l.task||''}`).slice(0,80);
+    const maxTaskId=mergedTasks.reduce((max,t)=>Math.max(max,Number(t.id)||0),0);
+
+    return {
+      ...base,
+      cols:mergedCols,
+      tasks:mergedTasks,
+      actLog:mergedLog,
+      sysAlerts:Array.isArray(base.sysAlerts)?base.sysAlerts:sysAlerts,
+      idC:Math.max(Number(base.idC)||1,maxTaskId+1),
+      updatedAt:Date.now(),
+      updatedBy:clientId
+    };
+  }
+
   function applyState(state){
-    if(!state)return;
+    if(!state||typeof state!=='object')return;
     if(state.curUser&&USERS[state.curUser])curUser=state.curUser;
     if(Array.isArray(state.cols))cols=state.cols;
     if(Array.isArray(state.tasks))tasks=state.tasks;
@@ -946,9 +987,9 @@ function adminEmpDetail(uid){
     if(typeof selAdminEmp!=='undefined')selAdminEmp=state.selAdminEmp||null;
 
     const maiorId=tasks.reduce((max,t)=>Math.max(max,Number(t.id)||0),0);
-    idC=Math.max(idC,maiorId+1);
+    idC=Math.max(Number(idC)||1,maiorId+1);
 
-    localStorage.setItem(STORAGE_KEY,JSON.stringify(getState()));
+    try{localStorage.setItem(STORAGE_KEY,JSON.stringify({...getState(),updatedAt:state.updatedAt||Date.now(),updatedBy:state.updatedBy||clientId}));}catch(e){console.warn('Nao foi possivel salvar localmente.',e);}
     renderBoard();
     if(curView==='dash')renderDash();
     if(curView==='prob')renderProbs();
@@ -957,24 +998,49 @@ function adminEmpDetail(uid){
   }
 
   function salvarLocal(){
-    localStorage.setItem(STORAGE_KEY,JSON.stringify(getState()));
-  }
-
-  function carregarLocal(){
-    const raw=localStorage.getItem(STORAGE_KEY);
-    if(!raw)return false;
-    const state=JSON.parse(raw);
-    applyState(state);
-    return true;
+    try{localStorage.setItem(STORAGE_KEY,JSON.stringify(getState()));}catch(e){console.warn('Nao foi possivel salvar localmente.',e);}
   }
 
   function salvarNuvem(){
     if(applyingRemote)return;
-    salvarLocal();
-    if(remoteRef)remoteRef.set(getState());
+    const state=getState();
+    const json=JSON.stringify(state);
+    try{localStorage.setItem(STORAGE_KEY,json);}catch(e){console.warn('Nao foi possivel salvar localmente.',e);}
+    if(!remoteRef||json===lastSavedJson)return;
+    lastSavedJson=json;
+    remoteRef.set(state).catch(e=>console.warn('Nao foi possivel salvar no banco online.',e));
+  }
+
+  function salvarLogo(){
+    if(applyingRemote)return;
+    clearTimeout(saveTimer);
+    saveTimer=setTimeout(salvarNuvem,180);
+  }
+
+  function wrapSave(fnName){
+    const original=window[fnName];
+    if(typeof original!=='function'||original.__syncWrapped)return;
+    window[fnName]=function(...args){
+      const result=original.apply(this,args);
+      salvarLogo();
+      return result;
+    };
+    window[fnName].__syncWrapped=true;
+  }
+
+  function wrapAllMutations(){
+    [
+      'addLog','toggleRPanel','setView','setF','toggleChk','delChk','addChk','addComm','addCommRight',
+      'savePT','savePD','addCustLblSel','addCustLblText','removeCustLbl','chgStatus','chgTitle','chgUrg',
+      'chgDue','chgResp','togLbl','quickDone','openNew','addCard','finEdit','setCC','delCol','addCol',
+      'switchUser','processImageFile','removeImg','punchIn','punchOut','onColDrop','onColHdrDrop'
+    ].forEach(wrapSave);
   }
 
   async function iniciarFirebase(){
+    const localState=readLocalState();
+    if(localState)applyState(localState);
+
     try{
       await loadScript('https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js');
       await loadScript('https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js');
@@ -982,47 +1048,49 @@ function adminEmpDetail(uid){
       if(!firebase.apps.length)firebase.initializeApp(firebaseConfig);
       remoteRef=firebase.database().ref(FIREBASE_STATE_PATH);
 
-      // Faz backup do que existe neste computador antes de qualquer sincronizacao.
-      localStorage.setItem(BACKUP_KEY,JSON.stringify(getState()));
+      if(localState)localStorage.setItem(BACKUP_KEY,JSON.stringify(localState));
 
-      // PRIORIDADE TOTAL: envia este computador para o banco sem perguntar toda hora.
-      await remoteRef.set(getState());
-      firstSyncDone=true;
+      const snap=await remoteRef.get();
+      const remoteState=snap.val();
+      const mergedState=mergeStates(remoteState,readLocalState()||getState());
+
+      if(mergedState){
+        applyingRemote=true;
+        applyState(mergedState);
+        applyingRemote=false;
+        await remoteRef.set({...mergedState,updatedAt:Date.now(),updatedBy:clientId});
+      }
 
       remoteRef.on('value',snap=>{
-        const state=snap.val();
-        if(!state||!firstSyncDone)return;
-        if(state.updatedBy===clientId)return;
-
+        const remoteState=snap.val();
+        if(!remoteState||remoteState.updatedBy===clientId)return;
+        const mergedState=mergeStates(remoteState,readLocalState()||getState());
+        if(!mergedState)return;
         applyingRemote=true;
-        applyState(state);
+        applyState(mergedState);
         applyingRemote=false;
       });
 
-      console.log('Supertrello sincronizado. Este computador foi enviado para o banco.');
+      console.log('Supertrello sincronizado com o banco online da equipe.');
     }catch(e){
       console.warn('Firebase nao conectou. Continua salvo neste computador.',e);
     }
   }
 
   window.salvarSupertrello=salvarNuvem;
-
   window.restaurarBackupAntesFirebase=function(){
     const raw=localStorage.getItem(BACKUP_KEY);
-    if(!raw){
-      alert('Nao encontrei backup local.');
-      return;
-    }
-    applyState(JSON.parse(raw));
+    if(!raw){alert('Nao encontrei backup local.');return;}
+    const state=JSON.parse(raw);
+    applyState(state);
     salvarNuvem();
     alert('Backup local restaurado e enviado para o banco.');
   };
 
-  carregarLocal();
+  wrapAllMutations();
   document.getElementById('bv').style.display='flex';
   renderBoard();
-
-  iniciarFirebase();
+  iniciarFirebase().then(wrapAllMutations);
 
   setInterval(salvarNuvem,1200);
   window.addEventListener('beforeunload',salvarNuvem);
