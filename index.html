@@ -1095,77 +1095,7 @@ function adminEmpDetail(uid){
   setInterval(salvarNuvem,1200);
   window.addEventListener('beforeunload',salvarNuvem);
 })();
-// ===== HISTORICO DE BACKUPS SUPERTRELLO =====
-(function(){
-  const HISTORY_KEY='supertrello-history:v1';
-  const MAIN_KEY='supertrello-cronos-system:v1';
-  const MAX_BACKUPS=30;
 
-  function getCurrentState(){
-    return {
-      curUser, cols, tasks, actLog, sysAlerts, idC, metaVal,
-      pontoData:typeof pontoData!=='undefined'?pontoData:{},
-      selAdminEmp:typeof selAdminEmp!=='undefined'?selAdminEmp:null,
-      backupAt:new Date().toISOString()
-    };
-  }
-
-  function saveHistoryBackup(){
-    try{
-      const state=getCurrentState();
-      const history=JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]');
-
-      const last=history[0];
-      const same=last&&JSON.stringify(last.tasks)===JSON.stringify(state.tasks)&&JSON.stringify(last.cols)===JSON.stringify(state.cols);
-      if(same)return;
-
-      history.unshift(state);
-      localStorage.setItem(HISTORY_KEY,JSON.stringify(history.slice(0,MAX_BACKUPS)));
-      localStorage.setItem(MAIN_KEY,JSON.stringify(state));
-    }catch(e){
-      console.warn('Nao foi possivel salvar historico.',e);
-    }
-  }
-
-  window.listarBackupsSupertrello=function(){
-    const history=JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]');
-    console.table(history.map((b,i)=>({
-      indice:i,
-      data:new Date(b.backupAt).toLocaleString('pt-BR'),
-      tarefas:Array.isArray(b.tasks)?b.tasks.length:0,
-      colunas:Array.isArray(b.cols)?b.cols.length:0
-    })));
-    return history;
-  };
-
-  window.restaurarBackupSupertrello=function(indice){
-    const history=JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]');
-    const state=history[indice];
-
-    if(!state){
-      alert('Backup nao encontrado.');
-      return;
-    }
-
-    if(!confirm(`Restaurar backup de ${new Date(state.backupAt).toLocaleString('pt-BR')} com ${state.tasks?.length||0} tarefas?`))return;
-
-    localStorage.setItem(MAIN_KEY,JSON.stringify(state));
-
-    if(typeof firebase!=='undefined'&&firebase.apps?.length){
-      firebase.database().ref('supertrello/estado').set({
-        ...state,
-        updatedAt:Date.now(),
-        updatedBy:'restore_history'
-      }).then(()=>location.reload());
-    }else{
-      location.reload();
-    }
-  };
-
-  saveHistoryBackup();
-  setInterval(saveHistoryBackup,5000);
-  window.addEventListener('beforeunload',saveHistoryBackup);
-})();
 
  
 </script>
